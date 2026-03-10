@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Monte a Frase – Método MTR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0B1622;
+  --surface: #132035;
+  --s2:      #1A2D45;
+  --gold:    #F5A623;
+  --gold2:   #FFD27A;
+  --green:   #2EC486;
+  --red:     #E8463A;
+  --blue:    #3D8EFF;
+  --purple:  #A78BFA;
+  --text:    #F0F4FF;
+  --muted:   #7B90B2;
+  --radius:  16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* ── SCREENS ── */
+.screen{display:none;flex-direction:column;min-height:100vh;}
+.screen.active{display:flex;}
+
+/* ── MODE SCREEN ── */
+#s-mode{
+  background:linear-gradient(160deg,#0f2040 0%,var(--bg) 55%);
+  padding-bottom:60px;
+}
+.mode-hero{padding:44px 24px 32px;position:relative;overflow:hidden;}
+.mode-hero::before{
+  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,166,35,0.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;}
+.badge{
+  display:inline-flex;align-items:center;
+  background:var(--gold);color:#000;
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 12px;border-radius:50px;
+}
+.ig-link{
+  display:flex;align-items:center;gap:7px;text-decoration:none;
+  transition:opacity 0.15s;
+}
+.ig-link:active{opacity:0.8;}
+.ig-avatar{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  border:1.5px solid rgba(255,255,255,0.15);
+}
+.ig-info{line-height:1.25;}
+.ig-name{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--text);}
+.ig-handle{font-size:10px;color:var(--muted);}
+
+.mode-hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(26px,7vw,38px);font-weight:800;
+  line-height:1.1;color:var(--text);margin-bottom:8px;letter-spacing:-0.5px;
+}
+.mode-hero h1 span{color:var(--gold);}
+.mode-hero p{font-size:14px;color:var(--muted);line-height:1.6;max-width:320px;}
+
+.modes-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
+.mode-card{
+  background:var(--surface);border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:18px 20px;cursor:pointer;
+  transition:transform 0.15s,border-color 0.15s,box-shadow 0.15s;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;gap:16px;
+}
+.mode-card::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:4px;
+  background:var(--c);border-radius:var(--radius) 0 0 var(--radius);
+}
+.mode-card:hover{transform:translateY(-2px);border-color:var(--c);box-shadow:0 6px 24px rgba(0,0,0,0.3);}
+.mode-card:active{transform:scale(0.98);}
+.mode-icon{
+  width:46px;height:46px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  background:rgba(255,255,255,0.05);
+}
+.mode-info{flex:1;}
+.mode-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.mode-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+.mode-count{
+  font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;
+  background:rgba(255,255,255,0.07);color:var(--muted);white-space:nowrap;
+  flex-shrink:0;
+}
+
+/* ── GAME SCREEN ── */
+#s-game{background:var(--bg);}
+.game-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 18px;
+  background:var(--surface);border-bottom:1px solid rgba(255,255,255,0.05);
+  flex-shrink:0;
+}
+.btn-back-sm{
+  width:34px;height:34px;border-radius:10px;background:var(--s2);
+  border:none;color:var(--muted);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.bar-progress{flex:1;}
+.bar-mode{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.pbar{height:4px;background:var(--s2);border-radius:4px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width 0.4s ease;}
+.bar-counter{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+.bar-score{
+  display:flex;align-items:center;gap:4px;
+  background:var(--s2);border-radius:50px;padding:4px 10px;
+  font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;flex-shrink:0;
+}
+
+.game-body{flex:1;padding:18px 18px 24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;}
+
+/* Sentence card */
+.sentence-card{
+  background:var(--surface);border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:20px;text-align:center;
+}
+.sentence-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.sentence-pt{
+  font-family:'Syne',sans-serif;font-size:clamp(20px,5vw,27px);font-weight:800;
+  color:var(--text);line-height:1.2;padding-bottom:2px;
+}
+.sentence-hint{font-size:11px;color:var(--muted);margin-top:6px;}
+
+/* Slots */
+.slots-area{display:flex;gap:8px;flex-wrap:wrap;}
+.slot{
+  flex:1;min-width:72px;
+  background:var(--s2);border-radius:12px;
+  border:2px dashed rgba(255,255,255,0.1);
+  padding:10px 6px 8px;min-height:66px;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  gap:4px;cursor:pointer;transition:all 0.18s;
+  position:relative;
+}
+.slot-label{font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:0.7;line-height:1;}
+.slot-value{
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
+  color:var(--text);min-height:20px;display:flex;align-items:center;
+  letter-spacing:0.2px;text-align:center;line-height:1.1;
+}
+
+/* Slot type theming */
+.slot[data-type=wh]   {border-color:rgba(61,142,255,0.25);}
+.slot[data-type=wh]   .slot-label{color:var(--blue);}
+.slot[data-type=tobe] {border-color:rgba(245,166,35,0.25);}
+.slot[data-type=tobe] .slot-label{color:var(--gold);}
+.slot[data-type=aux]  {border-color:rgba(245,166,35,0.25);}
+.slot[data-type=aux]  .slot-label{color:var(--gold);}
+.slot[data-type=subj] {border-color:rgba(46,196,134,0.25);}
+.slot[data-type=subj] .slot-label{color:var(--green);}
+.slot[data-type=verb] {border-color:rgba(167,139,250,0.25);}
+.slot[data-type=verb] .slot-label{color:var(--purple);}
+
+/* Active slot */
+.slot.active[data-type=wh]   {border-color:var(--blue);border-style:solid;background:rgba(61,142,255,0.07);}
+.slot.active[data-type=tobe] {border-color:var(--gold);border-style:solid;background:rgba(245,166,35,0.07);}
+.slot.active[data-type=aux]  {border-color:var(--gold);border-style:solid;background:rgba(245,166,35,0.07);}
+.slot.active[data-type=subj] {border-color:var(--green);border-style:solid;background:rgba(46,196,134,0.07);}
+.slot.active[data-type=verb] {border-color:var(--purple);border-style:solid;background:rgba(167,139,250,0.07);}
+
+/* Slot filled */
+.slot.filled{border-style:solid;opacity:1;}
+.slot.filled[data-type=wh]   {background:rgba(61,142,255,0.1);}
+.slot.filled[data-type=tobe] {background:rgba(245,166,35,0.1);}
+.slot.filled[data-type=aux]  {background:rgba(245,166,35,0.1);}
+.slot.filled[data-type=subj] {background:rgba(46,196,134,0.1);}
+.slot.filled[data-type=verb] {background:rgba(167,139,250,0.1);}
+
+/* Slot result states */
+.slot.correct{background:rgba(46,196,134,0.15)!important;border-color:#2EC486!important;border-style:solid!important;}
+.slot.wrong  {background:rgba(232,70,58,0.15)!important;  border-color:#E8463A!important;border-style:solid!important;}
+
+/* Pieces bank */
+.bank-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.pieces-bank{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  background:var(--surface);border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,0.05);
+  padding:16px;min-height:76px;
+}
+.piece{
+  padding:10px 16px;border-radius:12px;border:2px solid;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.3px;
+  cursor:pointer;transition:transform 0.12s,opacity 0.15s;
+  user-select:none;
+}
+.piece:active{transform:scale(0.91);}
+.piece.gone{opacity:0;pointer-events:none;width:0;padding:0;border:none;margin:0;}
+.piece.wh   {background:rgba(61,142,255,0.12); border-color:rgba(61,142,255,0.4); color:#7bb8ff;}
+.piece.tobe {background:rgba(245,166,35,0.12); border-color:rgba(245,166,35,0.4); color:var(--gold);}
+.piece.aux  {background:rgba(245,166,35,0.12); border-color:rgba(245,166,35,0.4); color:var(--gold);}
+.piece.subj {background:rgba(46,196,134,0.12); border-color:rgba(46,196,134,0.4); color:#5EE0A8;}
+.piece.verb {background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:#c4aeff;}
+
+/* Feedback */
+.feedback-area{display:none;flex-direction:column;gap:6px;}
+.feedback-area.show{display:flex;}
+.fb-item{
+  padding:12px 14px;border-radius:12px;background:var(--surface);
+  border:1px solid rgba(255,255,255,0.06);
+  font-size:13px;line-height:1.6;color:var(--muted);
+}
+.fb-item .err{color:var(--red);font-weight:700;}
+.fb-item .ok{color:var(--green);font-weight:700;}
+.fb-item .dim{color:var(--muted);}
+.fb-item .rule{color:#c8d6e8;}
+.fb-correct-msg{
+  padding:14px 16px;border-radius:12px;
+  background:rgba(46,196,134,0.1);border:1px solid rgba(46,196,134,0.25);
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:800;
+  color:var(--green);text-align:center;letter-spacing:0.3px;
+}
+
+/* Action buttons */
+.game-actions{display:flex;gap:10px;}
+.btn-check{
+  flex:1;background:var(--gold);color:#000;border:none;border-radius:14px;
+  padding:16px;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;
+  cursor:pointer;transition:transform 0.12s,opacity 0.15s;
+}
+.btn-check:disabled{opacity:0.3;cursor:not-allowed;}
+.btn-check:not(:disabled):active{transform:scale(0.97);}
+.btn-retry{
+  flex:1;background:var(--s2);color:var(--muted);
+  border:1px solid rgba(255,255,255,0.08);border-radius:14px;
+  padding:16px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;
+  cursor:pointer;display:none;
+}
+.btn-retry.show{display:block;}
+.btn-next{
+  flex:1;background:var(--green);color:#000;border:none;border-radius:14px;
+  padding:16px;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;
+  cursor:pointer;display:none;transition:transform 0.12s;
+}
+.btn-next.show{display:block;}
+.btn-next:active{transform:scale(0.97);}
+
+/* ── RESULT SCREEN ── */
+#s-result{
+  background:linear-gradient(160deg,#0f2040 0%,var(--bg) 55%);
+  align-items:center;justify-content:center;padding:32px 20px;
+}
+.result-card{
+  background:var(--surface);border-radius:24px;border:1px solid rgba(255,255,255,0.08);
+  padding:40px 28px;max-width:420px;width:100%;text-align:center;
+  animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.result-emoji{font-size:56px;display:block;margin-bottom:14px;animation:bob 2s ease-in-out infinite;}
+.result-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.result-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.score-ring{
+  width:120px;height:120px;margin:0 auto 14px;border-radius:50%;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.score-ring::before{content:'';position:absolute;inset:12px;background:var(--surface);border-radius:50%;}
+.score-inner{position:relative;z-index:1;text-align:center;}
+.score-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--text);display:block;line-height:1;}
+.score-of{font-size:11px;color:var(--muted);}
+.score-pct{font-size:17px;font-weight:800;color:var(--gold);margin-bottom:20px;}
+.result-msg{
+  font-size:13px;color:var(--muted);background:var(--s2);
+  padding:12px 16px;border-radius:12px;line-height:1.6;margin-bottom:24px;
+}
+.result-acts{display:flex;gap:10px;}
+.btn-r{
+  flex:1;border:none;border-radius:14px;padding:14px;
+  font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;cursor:pointer;
+  transition:transform 0.12s;
+}
+.btn-r:active{transform:scale(0.97);}
+.btn-r.pri{background:var(--gold);color:#000;}
+.btn-r.sec{background:var(--s2);color:var(--text);border:1px solid rgba(255,255,255,0.08);}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:68px;
+  background:rgba(11,22,34,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:space-around;
+  z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;
+  font-size:10px;cursor:pointer;padding:8px 16px;border-radius:12px;
+  text-decoration:none;transition:color 0.15s;
+}
+.nav-btn svg{width:21px;height:21px;}
+.nav-btn.active{color:var(--gold);}
+.nav-btn.ig-nav{color:#e6683c;}
+
+/* Animations */
+@keyframes popIn{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes pulseBorder{0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,0.4)}50%{box-shadow:0 0 0 4px rgba(245,166,35,0)}}
+.shake{animation:shake 0.35s ease;}
+.pulse{animation:pulseBorder 1.2s ease infinite;}
+</style>
+</head>
+<body>
+
+<!-- ══════════ MODE SELECTION ══════════ -->
+<div class="screen active" id="s-mode">
+  <div class="mode-hero">
+    <div class="hero-top-row">
+      <div class="badge">🦊 Método MTR</div>
+      <a class="ig-link" href="https://www.instagram.com/rodyalmeidaoficial/" target="_blank" rel="noopener">
+        <div class="ig-avatar">🦊</div>
+        <div class="ig-info">
+          <div class="ig-name">Rody Almeida</div>
+          <div class="ig-handle">@rodyalmeidaoficial</div>
+        </div>
+      </a>
+    </div>
+    <h1>Monte a <span>Frase</span></h1>
+    <p>Encaixe as peças na ordem certa e aprenda a estrutura do inglês de verdade.</p>
+  </div>
+
+  <div class="modes-list">
+    <div class="mode-card" style="--c:#F5A623" onclick="startMode('ptb')">
+      <div class="mode-icon">🔵</div>
+      <div class="mode-info">
+        <div class="mode-name">PTB — To Be</div>
+        <div class="mode-desc">WH + AM / IS / ARE / WAS / WERE + Sujeito</div>
+      </div>
+      <div class="mode-count">8 frases</div>
+    </div>
+    <div class="mode-card" style="--c:#3D8EFF" onclick="startMode('pasv')">
+      <div class="mode-icon">⚙️</div>
+      <div class="mode-info">
+        <div class="mode-name">PASV — Auxiliares</div>
+        <div class="mode-desc">WH + DO / WILL / WOULD / CAN... + Sujeito + Verbo</div>
+      </div>
+      <div class="mode-count">8 frases</div>
+    </div>
+    <div class="mode-card" style="--c:#2EC486" onclick="startMode('mix')">
+      <div class="mode-icon">🎲</div>
+      <div class="mode-info">
+        <div class="mode-name">Mix — Desafio Total</div>
+        <div class="mode-desc">PTB e PASV misturados — para quem quer testar tudo</div>
+      </div>
+      <div class="mode-count">16 frases</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ GAME SCREEN ══════════ -->
+<div class="screen" id="s-game">
+  <div class="game-bar">
+    <button class="btn-back-sm" onclick="goHome()">←</button>
+    <div class="bar-progress">
+      <div class="bar-mode" id="bar-mode">PTB</div>
+      <div class="pbar"><div class="pbar-fill" id="pbar-fill" style="width:0%"></div></div>
+    </div>
+    <div class="bar-counter" id="bar-counter">1/8</div>
+    <div class="bar-score">⭐ <span id="bar-score">0</span></div>
+  </div>
+
+  <div class="game-body" id="game-body">
+    <!-- Injected dynamically -->
+  </div>
+</div>
+
+<!-- ══════════ RESULT SCREEN ══════════ -->
+<div class="screen" id="s-result">
+  <div class="result-card">
+    <span class="result-emoji" id="r-emoji">🏆</span>
+    <h2 class="result-title" id="r-title">Incrível!</h2>
+    <p class="result-sub" id="r-sub">Modo PTB completo!</p>
+    <div class="score-ring" id="r-ring">
+      <div class="score-inner">
+        <span class="score-num" id="r-num">0</span>
+        <span class="score-of" id="r-of">de 0</span>
+      </div>
+    </div>
+    <div class="score-pct" id="r-pct">0%</div>
+    <div class="result-msg" id="r-msg">Continue praticando!</div>
+    <div class="result-acts">
+      <button class="btn-r sec" onclick="startMode(currentMode)">🔄 Repetir</button>
+      <button class="btn-r pri" onclick="goHome()">🏠 Início</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ BOTTOM NAV ══════════ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="goHome()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Início
+  </button>
+  <a class="nav-btn ig-nav" href="https://www.instagram.com/rodyalmeidaoficial/" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+    Instagram
+  </a>
+</nav>
+
+<script>
+// ══════════════════════════════════════════
+//  PIECE KNOWLEDGE BASE
+// ══════════════════════════════════════════
+const PIECES = {
+  // WH words
+  WHAT:       {cat:'wh',   pt:'o quê / o que',          rule:'WHAT pergunta sobre coisas ou ações'},
+  WHERE:      {cat:'wh',   pt:'onde',                   rule:'WHERE pergunta sobre lugar'},
+  WHEN:       {cat:'wh',   pt:'quando',                 rule:'WHEN pergunta sobre tempo'},
+  WHY:        {cat:'wh',   pt:'por quê',                rule:'WHY pergunta sobre motivo'},
+  WHO:        {cat:'wh',   pt:'quem',                   rule:'WHO pergunta sobre pessoa'},
+  'HOW MUCH': {cat:'wh',   pt:'quanto',                 rule:'HOW MUCH = quantidade incontável'},
+  'HOW MANY': {cat:'wh',   pt:'quantos',                rule:'HOW MANY = quantidade contável'},
+  'HOW OLD':  {cat:'wh',   pt:'quantos anos',           rule:'HOW OLD pergunta sobre idade'},
+  'HOW LONG': {cat:'wh',   pt:'quanto tempo / distância',rule:'HOW LONG = duração ou distância'},
+  // To Be
+  AM:         {cat:'tobe', pt:'sou / estou',            rule:'AM é exclusivo de I (eu)'},
+  IS:         {cat:'tobe', pt:'é / está',               rule:'IS é para HE, SHE, IT'},
+  ARE:        {cat:'tobe', pt:'são / estão / estamos',  rule:'ARE é para YOU, WE, THEY'},
+  WAS:        {cat:'tobe', pt:'era / estava',           rule:'WAS = passado de AM e IS  →  I, HE, SHE, IT'},
+  WERE:       {cat:'tobe', pt:'eram / estavam',         rule:'WERE = passado de ARE  →  YOU, WE, THEY'},
+  // Auxiliaries
+  DO:         {cat:'aux',  pt:'fazer / presente',       rule:'DO = presente simples (I, YOU, WE, THEY)'},
+  WILL:       {cat:'aux',  pt:'vai (futuro)',            rule:'WILL indica futuro'},
+  WOULD:      {cat:'aux',  pt:'faria / gostaria',       rule:'WOULD = hipotético ou condicional'},
+  CAN:        {cat:'aux',  pt:'pode',                   rule:'CAN = capacidade no presente'},
+  COULD:      {cat:'aux',  pt:'poderia',                rule:'COULD = passado ou hipotético de CAN'},
+  SHOULD:     {cat:'aux',  pt:'deveria',                rule:'SHOULD = obrigação moral ou conselho'},
+  DID:        {cat:'aux',  pt:'fez (passado)',          rule:'DID = passado simples'},
+  // Subjects
+  I:          {cat:'subj', pt:'eu'},
+  YOU:        {cat:'subj', pt:'você'},
+  HE:         {cat:'subj', pt:'ele'},
+  SHE:        {cat:'subj', pt:'ela'},
+  IT:         {cat:'subj', pt:'isso / aquilo'},
+  WE:         {cat:'subj', pt:'nós'},
+  THEY:       {cat:'subj', pt:'eles / elas'},
+  // Verbs
+  GO:         {cat:'verb', pt:'ir'},
+  LIKE:       {cat:'verb', pt:'gostar'},
+  SEE:        {cat:'verb', pt:'ver'},
+  EAT:        {cat:'verb', pt:'comer'},
+  SLEEP:      {cat:'verb', pt:'dormir'},
+  DRINK:      {cat:'verb', pt:'beber'},
+  DRIVE:      {cat:'verb', pt:'dirigir'},
+  WORK:       {cat:'verb', pt:'trabalhar'},
+  LIVE:       {cat:'verb', pt:'morar / viver'},
+  DO_V:       {cat:'verb', pt:'fazer', display:'DO'},
+};
+
+// Slot type → label (PT)
+const SLOT_LABELS = {
+  wh:   'PRIORIDADE',
+  tobe: 'VERBO TO BE',
+  aux:  'AUXILIAR',
+  subj: 'SUJEITO',
+  verb: 'VERBO',
+};
+
+// ══════════════════════════════════════════
+//  SENTENCES DATA
+// ══════════════════════════════════════════
+const SENTENCES_PTB = [
+  {
+    pt:'Onde você está?', en:'Where are you?',
+    slots:['wh','tobe','subj'],
+    ans:['WHERE','ARE','YOU'],
+    pool:{wh:['WHERE','WHAT','WHY'],tobe:['ARE','IS','WAS'],subj:['YOU','HE','WE']}
+  },
+  {
+    pt:'O que é isso?', en:'What is it?',
+    slots:['wh','tobe','subj'],
+    ans:['WHAT','IS','IT'],
+    pool:{wh:['WHAT','WHERE','WHO'],tobe:['IS','ARE','WAS'],subj:['IT','HE','YOU']}
+  },
+  {
+    pt:'Quem é ela?', en:'Who is she?',
+    slots:['wh','tobe','subj'],
+    ans:['WHO','IS','SHE'],
+    pool:{wh:['WHO','WHAT','WHERE'],tobe:['IS','ARE','WERE'],subj:['SHE','HE','THEY']}
+  },
+  {
+    pt:'Por que ele estava triste?', en:'Why was he sad?',
+    slots:['wh','tobe','subj'],
+    ans:['WHY','WAS','HE'],
+    pool:{wh:['WHY','WHEN','WHERE'],tobe:['WAS','IS','WERE'],subj:['HE','SHE','IT']}
+  },
+  {
+    pt:'Quando foi isso?', en:'When was it?',
+    slots:['wh','tobe','subj'],
+    ans:['WHEN','WAS','IT'],
+    pool:{wh:['WHEN','WHERE','WHY'],tobe:['WAS','IS','WERE'],subj:['IT','HE','YOU']}
+  },
+  {
+    pt:'Quantos anos você tem?', en:'How old are you?',
+    slots:['wh','tobe','subj'],
+    ans:['HOW OLD','ARE','YOU'],
+    pool:{wh:['HOW OLD','HOW MUCH','WHAT'],tobe:['ARE','IS','WERE'],subj:['YOU','SHE','WE']}
+  },
+  {
+    pt:'Quem eram eles?', en:'Who were they?',
+    slots:['wh','tobe','subj'],
+    ans:['WHO','WERE','THEY'],
+    pool:{wh:['WHO','WHAT','WHERE'],tobe:['WERE','WAS','ARE'],subj:['THEY','HE','IT']}
+  },
+  {
+    pt:'Onde eu estou?', en:'Where am I?',
+    slots:['wh','tobe','subj'],
+    ans:['WHERE','AM','I'],
+    pool:{wh:['WHERE','WHAT','WHEN'],tobe:['AM','IS','ARE'],subj:['I','YOU','WE']}
+  },
+];
+
+const SENTENCES_PASV = [
+  {
+    pt:'O que você faria?', en:'What would you do?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHAT','WOULD','YOU','DO_V'],
+    pool:{wh:['WHAT','WHERE','WHY'],aux:['WOULD','WILL','DID'],subj:['YOU','HE','SHE'],verb:['DO_V','GO','LIKE']}
+  },
+  {
+    pt:'Onde você vai?', en:'Where will you go?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHERE','WILL','YOU','GO'],
+    pool:{wh:['WHERE','WHEN','WHY'],aux:['WILL','WOULD','DID'],subj:['YOU','HE','WE'],verb:['GO','SLEEP','WORK']}
+  },
+  {
+    pt:'O que você gosta?', en:'What do you like?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHAT','DO','YOU','LIKE'],
+    pool:{wh:['WHAT','WHERE','WHEN'],aux:['DO','DID','WILL'],subj:['YOU','SHE','THEY'],verb:['LIKE','SEE','EAT']}
+  },
+  {
+    pt:'O que você comeu?', en:'What did you eat?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHAT','DID','YOU','EAT'],
+    pool:{wh:['WHAT','WHERE','WHY'],aux:['DID','DO','WOULD'],subj:['YOU','HE','WE'],verb:['EAT','DRINK','GO']}
+  },
+  {
+    pt:'Onde ele deveria morar?', en:'Where should he live?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHERE','SHOULD','HE','LIVE'],
+    pool:{wh:['WHERE','WHEN','WHY'],aux:['SHOULD','COULD','DID'],subj:['HE','SHE','YOU'],verb:['LIVE','GO','WORK']}
+  },
+  {
+    pt:'O que eles podem ver?', en:'What can they see?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHAT','CAN','THEY','SEE'],
+    pool:{wh:['WHAT','WHERE','WHO'],aux:['CAN','COULD','WILL'],subj:['THEY','HE','WE'],verb:['SEE','EAT','DRINK']}
+  },
+  {
+    pt:'Quando você vai dormir?', en:'When will you sleep?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHEN','WILL','YOU','SLEEP'],
+    pool:{wh:['WHEN','WHERE','WHY'],aux:['WILL','WOULD','DO'],subj:['YOU','SHE','THEY'],verb:['SLEEP','GO','WORK']}
+  },
+  {
+    pt:'O que você poderia beber?', en:'What could you drink?',
+    slots:['wh','aux','subj','verb'],
+    ans:['WHAT','COULD','YOU','DRINK'],
+    pool:{wh:['WHAT','WHERE','WHEN'],aux:['COULD','CAN','WOULD'],subj:['YOU','HE','WE'],verb:['DRINK','EAT','SEE']}
+  },
+];
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let currentMode = 'ptb';
+let queue = [];
+let qIdx = 0;
+let score = 0;
+let placed = {};  // { slotIdx: wordKey }
+let checked = false;
+let attempts = 0;
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+function shuffle(a){
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}
+  return b;
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goHome(){
+  showScreen('s-mode');
+  document.getElementById('nav-home').classList.add('active');
+}
+
+// ══════════════════════════════════════════
+//  DISPLAY LABEL for a word key
+// ══════════════════════════════════════════
+function display(key){
+  if(key === 'DO_V') return 'DO';
+  return key;
+}
+
+// ══════════════════════════════════════════
+//  START MODE
+// ══════════════════════════════════════════
+function startMode(mode){
+  currentMode = mode;
+  score = 0;
+  qIdx = 0;
+
+  if(mode === 'ptb')       queue = shuffle([...SENTENCES_PTB]);
+  else if(mode === 'pasv') queue = shuffle([...SENTENCES_PASV]);
+  else                     queue = shuffle([...SENTENCES_PTB, ...SENTENCES_PASV]);
+
+  showScreen('s-game');
+  document.getElementById('bar-mode').textContent =
+    mode === 'ptb' ? 'PTB — TO BE' : mode === 'pasv' ? 'PASV — AUXILIARES' : 'MIX';
+  renderQuestion();
+}
+
+// ══════════════════════════════════════════
+//  RENDER QUESTION
+// ══════════════════════════════════════════
+function renderQuestion(){
+  placed = {};
+  checked = false;
+  attempts = 0;
+
+  const q = queue[qIdx];
+  const total = queue.length;
+
+  // Update bar
+  document.getElementById('bar-counter').textContent = `${qIdx+1}/${total}`;
+  document.getElementById('pbar-fill').style.width = `${(qIdx/total)*100}%`;
+  document.getElementById('bar-score').textContent = score;
+
+  // Build all pieces (flat shuffled array with category info)
+  const allPieces = [];
+  q.slots.forEach(slotType => {
+    q.pool[slotType].forEach(key => {
+      const info = PIECES[key];
+      if(info) allPieces.push({key, cat: info.cat});
+    });
+  });
+  const shuffledPieces = shuffle(allPieces);
+
+  // Build HTML
+  const slotsHTML = q.slots.map((type, i) => `
+    <div class="slot" data-type="${type}" data-idx="${i}" id="slot-${i}" onclick="removeFromSlot(${i})">
+      <span class="slot-label">${SLOT_LABELS[type]}</span>
+      <span class="slot-value" id="slot-val-${i}"></span>
+    </div>
+  `).join('');
+
+  const piecesHTML = shuffledPieces.map(({key, cat}) => `
+    <button class="piece ${cat}" data-key="${key}" id="piece-${key}"
+      onclick="placePiece('${key}')">
+      ${display(key)}
+    </button>
+  `).join('');
+
+  document.getElementById('game-body').innerHTML = `
+    <div class="sentence-card">
+      <div class="sentence-label">Traduza para o inglês</div>
+      <div class="sentence-pt">${q.pt}</div>
+      <div class="sentence-hint">Toque nas peças na ordem correta</div>
+    </div>
+
+    <div class="slots-area" id="slots-area">${slotsHTML}</div>
+
+    <div>
+      <div class="bank-label">Peças disponíveis</div>
+      <div class="pieces-bank" id="pieces-bank">${piecesHTML}</div>
+    </div>
+
+    <div class="feedback-area" id="feedback-area"></div>
+
+    <div class="game-actions">
+      <button class="btn-check" id="btn-check" onclick="checkAnswer()" disabled>Verificar ✓</button>
+      <button class="btn-retry show" id="btn-retry" onclick="retry()">↺ Limpar</button>
+    </div>
+    <div class="game-actions" style="display:none" id="actions-next">
+      <button class="btn-retry show" id="btn-retry2" onclick="retry()">↺ Tentar de novo</button>
+      <button class="btn-next show" id="btn-next" onclick="nextQuestion()">Próxima →</button>
+    </div>
+  `;
+
+  // Highlight first slot as active
+  highlightActiveSlot();
+}
+
+// ══════════════════════════════════════════
+//  HIGHLIGHT ACTIVE SLOT
+// ══════════════════════════════════════════
+function highlightActiveSlot(){
+  const q = queue[qIdx];
+  document.querySelectorAll('.slot').forEach((s,i)=>{
+    s.classList.remove('active','pulse');
+    if(!placed[i] && !checked){
+      // find first empty
+      const firstEmpty = q.slots.findIndex((_,idx)=>!placed[idx]);
+      if(i === firstEmpty){
+        s.classList.add('active','pulse');
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════
+//  PLACE PIECE
+// ══════════════════════════════════════════
+function placePiece(key){
+  if(checked) return;
+  const q = queue[qIdx];
+
+  // Find first empty slot
+  const slotIdx = q.slots.findIndex((_,idx)=>!placed[idx]);
+  if(slotIdx === -1) return;
+
+  placed[slotIdx] = key;
+
+  // Update slot UI
+  const slot = document.getElementById(`slot-${slotIdx}`);
+  const val = document.getElementById(`slot-val-${slotIdx}`);
+  val.textContent = display(key);
+  slot.classList.add('filled');
+  slot.classList.remove('active','pulse');
+
+  // Hide piece from bank
+  const pieceEl = document.getElementById(`piece-${key}`);
+  if(pieceEl) pieceEl.classList.add('gone');
+
+  // Enable check if all slots filled
+  const allFilled = q.slots.every((_,i)=>placed[i]);
+  document.getElementById('btn-check').disabled = !allFilled;
+
+  highlightActiveSlot();
+}
+
+// ══════════════════════════════════════════
+//  REMOVE FROM SLOT
+// ══════════════════════════════════════════
+function removeFromSlot(slotIdx){
+  if(checked) return;
+  if(!placed[slotIdx]) return;
+
+  const key = placed[slotIdx];
+  delete placed[slotIdx];
+
+  // Clear slot UI
+  const slot = document.getElementById(`slot-${slotIdx}`);
+  document.getElementById(`slot-val-${slotIdx}`).textContent = '';
+  slot.classList.remove('filled','correct','wrong');
+
+  // Show piece back
+  const pieceEl = document.getElementById(`piece-${key}`);
+  if(pieceEl) pieceEl.classList.remove('gone');
+
+  document.getElementById('btn-check').disabled = true;
+  highlightActiveSlot();
+}
+
+// ══════════════════════════════════════════
+//  CHECK ANSWER
+// ══════════════════════════════════════════
+function checkAnswer(){
+  checked = true;
+  attempts++;
+  const q = queue[qIdx];
+  let allCorrect = true;
+  const wrongFeedback = [];
+
+  q.slots.forEach((type, i)=>{
+    const slot = document.getElementById(`slot-${i}`);
+    const userKey = placed[i];
+    const correctKey = q.ans[i];
+    slot.classList.remove('active','pulse','filled');
+
+    if(userKey === correctKey){
+      slot.classList.add('correct');
+    } else {
+      slot.classList.add('wrong');
+      slot.classList.add('shake');
+      setTimeout(()=>slot.classList.remove('shake'),400);
+      allCorrect = false;
+
+      const userInfo = PIECES[userKey] || {};
+      const correctInfo = PIECES[correctKey] || {};
+      const correctPt = correctInfo.pt || '';
+      const correctRule = correctInfo.rule || '';
+      const userPt = userInfo.pt || '';
+
+      let msg = `<span class="err">✗ ${display(userKey)}</span>`;
+      if(userPt) msg += ` <span class="dim">(${userPt})</span>`;
+      msg += ` → `;
+      msg += `<span class="ok">✓ ${display(correctKey)}</span>`;
+      if(correctPt) msg += ` <span class="dim">= ${correctPt}</span>`;
+      if(correctRule) msg += `<br><span class="rule">💡 ${correctRule}</span>`;
+
+      wrongFeedback.push(msg);
+    }
+  });
+
+  const fbArea = document.getElementById('feedback-area');
+
+  if(allCorrect){
+    score++;
+    document.getElementById('bar-score').textContent = score;
+    fbArea.className = 'feedback-area show';
+    fbArea.innerHTML = `<div class="fb-correct-msg">✓ Perfeito! — ${q.en}</div>`;
+    // Hide retry+check, show only next
+    document.querySelector('.game-actions').style.display = 'none';
+    const actNext = document.getElementById('actions-next');
+    actNext.style.display = 'flex';
+    document.getElementById('btn-retry2').style.display = 'none';
+    document.getElementById('btn-next').classList.add('show');
+  } else {
+    fbArea.className = 'feedback-area show';
+    fbArea.innerHTML = wrongFeedback.map(f=>`<div class="fb-item">${f}</div>`).join('');
+    // Show retry + next
+    document.querySelector('.game-actions').style.display = 'none';
+    const actNext = document.getElementById('actions-next');
+    actNext.style.display = 'flex';
+    document.getElementById('btn-retry2').style.display = 'block';
+    document.getElementById('btn-next').classList.add('show');
+  }
+}
+
+// ══════════════════════════════════════════
+//  RETRY (same question)
+// ══════════════════════════════════════════
+function retry(){
+  renderQuestion();
+}
+
+// ══════════════════════════════════════════
+//  NEXT QUESTION
+// ══════════════════════════════════════════
+function nextQuestion(){
+  qIdx++;
+  if(qIdx >= queue.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ══════════════════════════════════════════
+//  SHOW RESULTS
+// ══════════════════════════════════════════
+function showResults(){
+  const total = queue.length;
+  const pct = Math.round((score/total)*100);
+
+  const cfgs = [
+    {min:100, emoji:'🏆', title:'Nota máxima!',    msg:'Você mandou muito bem! Continue assim! 🌟'},
+    {min:80,  emoji:'🎉', title:'Muito bem!',       msg:'Ótimo desempenho! Quase perfeito! 💪'},
+    {min:60,  emoji:'😊', title:'Bom trabalho!',    msg:'Você está evoluindo! Pratique os erros! 📚'},
+    {min:40,  emoji:'💪', title:'Continue!',        msg:'Cada erro é um aprendizado! Tente de novo! 🌱'},
+    {min:0,   emoji:'🌱', title:'Você começou!',    msg:'A jornada começa agora! Repita o exercício! 🚀'},
+  ];
+  const cfg = cfgs.find(c=>pct>=c.min);
+  const modeLabel = currentMode==='ptb'?'PTB — To Be':currentMode==='pasv'?'PASV — Auxiliares':'Mix Total';
+
+  document.getElementById('r-emoji').textContent = cfg.emoji;
+  document.getElementById('r-title').textContent = cfg.title;
+  document.getElementById('r-sub').textContent = `Modo ${modeLabel} completo!`;
+  document.getElementById('r-num').textContent = score;
+  document.getElementById('r-of').textContent = `de ${total}`;
+  document.getElementById('r-pct').textContent = `${pct}%`;
+  document.getElementById('r-msg').textContent = cfg.msg;
+  document.getElementById('r-ring').style.background =
+    `conic-gradient(${pct>=60?'var(--green)':'var(--gold)'} ${pct*3.6}deg, rgba(255,255,255,0.06) 0)`;
+
+  showScreen('s-result');
+}
+</script>
+</body>
+</html>
