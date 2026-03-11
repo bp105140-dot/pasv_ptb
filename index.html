@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Monte a Frase – Método MTR</title>
+<title>MTR English — Aprenda Inglês</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 100'><text y='.9em' font-size='90'>🦊</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,10 +12,13 @@
   --bg:      #0B1622;
   --surface: #132035;
   --s2:      #1A2D45;
+  --s3:      #0f1c2e;
   --gold:    #F5A623;
   --gold2:   #FFD27A;
   --green:   #2EC486;
+  --green2:  #1a7a52;
   --red:     #E8463A;
+  --red2:    #8a2020;
   --blue:    #3D8EFF;
   --purple:  #A78BFA;
   --text:    #F0F4FF;
@@ -23,900 +26,1380 @@
   --radius:  16px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;user-select:none;}
 
 /* ── SCREENS ── */
 .screen{display:none;flex-direction:column;min-height:100vh;}
 .screen.active{display:flex;}
 
-/* ── MODE SCREEN ── */
-#s-mode{
-  background:linear-gradient(160deg,#0f2040 0%,var(--bg) 55%);
-  padding-bottom:60px;
-}
-.mode-hero{padding:44px 24px 32px;position:relative;overflow:hidden;}
-.mode-hero::before{
-  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
-  width:400px;height:400px;border-radius:50%;
-  background:radial-gradient(circle,rgba(245,166,35,0.1) 0%,transparent 70%);
-  pointer-events:none;
-}
-.hero-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;}
-.badge{
-  display:inline-flex;align-items:center;
-  background:var(--gold);color:#000;
-  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  padding:4px 12px;border-radius:50px;
-}
-.ig-link{
-  display:flex;align-items:center;gap:7px;text-decoration:none;
-  transition:opacity 0.15s;
-}
-.ig-link:active{opacity:0.8;}
-.ig-avatar{
-  width:28px;height:28px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
-  display:flex;align-items:center;justify-content:center;font-size:13px;
-  border:1.5px solid rgba(255,255,255,0.15);
-}
-.ig-info{line-height:1.25;}
-.ig-name{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--text);}
-.ig-handle{font-size:10px;color:var(--muted);}
-
-.mode-hero h1{
-  font-family:'Syne',sans-serif;font-size:clamp(26px,7vw,38px);font-weight:800;
-  line-height:1.1;color:var(--text);margin-bottom:8px;letter-spacing:-0.5px;
-}
-.mode-hero h1 span{color:var(--gold);}
-.mode-hero p{font-size:14px;color:var(--muted);line-height:1.6;max-width:320px;}
-
-.modes-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
-.mode-card{
-  background:var(--surface);border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,0.06);
-  padding:18px 20px;cursor:pointer;
-  transition:transform 0.15s,border-color 0.15s,box-shadow 0.15s;
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;gap:16px;
-}
-.mode-card::before{
-  content:'';position:absolute;top:0;left:0;bottom:0;width:4px;
-  background:var(--c);border-radius:var(--radius) 0 0 var(--radius);
-}
-.mode-card:hover{transform:translateY(-2px);border-color:var(--c);box-shadow:0 6px 24px rgba(0,0,0,0.3);}
-.mode-card:active{transform:scale(0.98);}
-.mode-icon{
-  width:46px;height:46px;border-radius:14px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:22px;
-  background:rgba(255,255,255,0.05);
-}
-.mode-info{flex:1;}
-.mode-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:2px;}
-.mode-desc{font-size:12px;color:var(--muted);line-height:1.4;}
-.mode-count{
-  font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;
-  background:rgba(255,255,255,0.07);color:var(--muted);white-space:nowrap;
-  flex-shrink:0;
+/* ══════════════════════════════════════
+   HOME SCREEN
+══════════════════════════════════════ */
+#s-home {
+  background: var(--bg);
+  padding-bottom: 88px;
 }
 
-/* ── GAME SCREEN ── */
-#s-game{background:var(--bg);}
-.game-bar{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 18px;
-  background:var(--surface);border-bottom:1px solid rgba(255,255,255,0.05);
-  flex-shrink:0;
+.home-header {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(11,22,34,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.btn-back-sm{
-  width:34px;height:34px;border-radius:10px;background:var(--s2);
-  border:none;color:var(--muted);font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+.header-logo {
+  display: flex; align-items: center; gap: 10px;
 }
-.bar-progress{flex:1;}
-.bar-mode{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
-.pbar{height:4px;background:var(--s2);border-radius:4px;overflow:hidden;}
-.pbar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width 0.4s ease;}
-.bar-counter{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0;}
-.bar-score{
-  display:flex;align-items:center;gap:4px;
-  background:var(--s2);border-radius:50px;padding:4px 10px;
-  font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;flex-shrink:0;
+.header-fox { font-size: 24px; }
+.header-title { font-family:'Syne',sans-serif; font-size: 18px; font-weight: 800; color: var(--text); }
+.header-title span { color: var(--gold); }
+.header-stats { display: flex; align-items: center; gap: 12px; }
+.stat-pill {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--s2); border-radius: 50px; padding: 6px 12px;
+  font-size: 13px; font-weight: 700; color: var(--text);
+}
+.stat-pill .stat-icon { font-size: 14px; }
+.stat-pill.streak { color: #FF8C42; }
+.stat-pill.xp { color: var(--gold2); }
+
+/* Path */
+.path-container { padding: 24px 0 40px; }
+.unit-block { margin-bottom: 8px; }
+.unit-header {
+  margin: 0 20px 20px;
+  background: linear-gradient(135deg, var(--surface), var(--s2));
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+.unit-icon-wrap {
+  width: 46px; height: 46px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.unit-text { flex: 1; }
+.unit-num { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.unit-name { font-family:'Syne',sans-serif; font-size: 16px; font-weight: 800; color: var(--text); }
+.unit-prog { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* Lesson nodes */
+.lessons-path {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0; padding: 0 20px;
+  position: relative;
+}
+.path-node-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+.path-connector {
+  width: 3px; height: 28px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+  border-radius: 2px;
+}
+.path-node {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer; position: relative;
+  transition: transform 0.15s;
+  border: 3px solid transparent;
+  gap: 3px;
+}
+.path-node:active { transform: scale(0.93); }
+.path-node .node-icon { font-size: 24px; line-height: 1; }
+.path-node .node-num { font-size: 9px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; opacity: 0.8; }
+.path-node.done {
+  background: linear-gradient(135deg, var(--gold), #e8921a);
+  border-color: rgba(255,255,255,0.2);
+  box-shadow: 0 4px 20px rgba(245,166,35,0.35);
+}
+.path-node.done .node-icon::after { content:''; }
+.path-node.current {
+  background: linear-gradient(135deg, var(--blue), #2266cc);
+  border-color: rgba(255,255,255,0.25);
+  box-shadow: 0 4px 24px rgba(61,142,255,0.45);
+  animation: nodePulse 2s ease-in-out infinite;
+}
+.path-node.locked {
+  background: var(--s2);
+  border-color: rgba(255,255,255,0.05);
+  cursor: not-allowed; opacity: 0.5;
+}
+.path-node .stars-row {
+  display: flex; gap: 2px; margin-top: 2px;
+}
+.path-node .star { font-size: 8px; }
+
+@keyframes nodePulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(61,142,255,0.45); transform: scale(1); }
+  50% { box-shadow: 0 4px 36px rgba(61,142,255,0.7); transform: scale(1.04); }
 }
 
-.game-body{flex:1;padding:18px 18px 24px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;}
+/* Zigzag path offsets */
+.path-node-wrap:nth-child(3n+1) .path-node { margin-left: 50px; }
+.path-node-wrap:nth-child(3n+2) .path-node { margin-left: 0; }
+.path-node-wrap:nth-child(3n+3) .path-node { margin-left: -50px; }
 
-/* Sentence card */
-.sentence-card{
-  background:var(--surface);border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,0.06);
-  padding:20px;text-align:center;
-}
-.sentence-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.sentence-pt{
-  font-family:'Syne',sans-serif;font-size:clamp(20px,5vw,27px);font-weight:800;
-  color:var(--text);line-height:1.2;padding-bottom:2px;
-}
-.sentence-hint{font-size:11px;color:var(--muted);margin-top:6px;}
-
-/* Slots */
-.slots-area{display:flex;gap:8px;flex-wrap:wrap;}
-.slot{
-  flex:1;min-width:72px;
-  background:var(--s2);border-radius:12px;
-  border:2px dashed rgba(255,255,255,0.1);
-  padding:10px 6px 8px;min-height:66px;
-  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-  gap:4px;cursor:pointer;transition:all 0.18s;
-  position:relative;
-}
-.slot-label{font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:0.7;line-height:1;}
-.slot-value{
-  font-family:'Syne',sans-serif;font-size:14px;font-weight:800;
-  color:var(--text);min-height:20px;display:flex;align-items:center;
-  letter-spacing:0.2px;text-align:center;line-height:1.1;
+/* ══════════════════════════════════════
+   LESSON SCREEN
+══════════════════════════════════════ */
+#s-lesson {
+  background: var(--bg);
 }
 
-/* Slot type theming */
-.slot[data-type=wh]   {border-color:rgba(61,142,255,0.25);}
-.slot[data-type=wh]   .slot-label{color:var(--blue);}
-.slot[data-type=tobe] {border-color:rgba(245,166,35,0.25);}
-.slot[data-type=tobe] .slot-label{color:var(--gold);}
-.slot[data-type=aux]  {border-color:rgba(245,166,35,0.25);}
-.slot[data-type=aux]  .slot-label{color:var(--gold);}
-.slot[data-type=subj] {border-color:rgba(46,196,134,0.25);}
-.slot[data-type=subj] .slot-label{color:var(--green);}
-.slot[data-type=verb] {border-color:rgba(167,139,250,0.25);}
-.slot[data-type=verb] .slot-label{color:var(--purple);}
-
-/* Active slot */
-.slot.active[data-type=wh]   {border-color:var(--blue);border-style:solid;background:rgba(61,142,255,0.07);}
-.slot.active[data-type=tobe] {border-color:var(--gold);border-style:solid;background:rgba(245,166,35,0.07);}
-.slot.active[data-type=aux]  {border-color:var(--gold);border-style:solid;background:rgba(245,166,35,0.07);}
-.slot.active[data-type=subj] {border-color:var(--green);border-style:solid;background:rgba(46,196,134,0.07);}
-.slot.active[data-type=verb] {border-color:var(--purple);border-style:solid;background:rgba(167,139,250,0.07);}
-
-/* Slot filled */
-.slot.filled{border-style:solid;opacity:1;}
-.slot.filled[data-type=wh]   {background:rgba(61,142,255,0.1);}
-.slot.filled[data-type=tobe] {background:rgba(245,166,35,0.1);}
-.slot.filled[data-type=aux]  {background:rgba(245,166,35,0.1);}
-.slot.filled[data-type=subj] {background:rgba(46,196,134,0.1);}
-.slot.filled[data-type=verb] {background:rgba(167,139,250,0.1);}
-
-/* Slot result states */
-.slot.correct{background:rgba(46,196,134,0.15)!important;border-color:#2EC486!important;border-style:solid!important;}
-.slot.wrong  {background:rgba(232,70,58,0.15)!important;  border-color:#E8463A!important;border-style:solid!important;}
-
-/* Pieces bank */
-.bank-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.pieces-bank{
-  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
-  background:var(--surface);border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,0.05);
-  padding:16px;min-height:76px;
+.lesson-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
 }
-.piece{
-  padding:10px 16px;border-radius:12px;border:2px solid;
-  font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:0.3px;
-  cursor:pointer;transition:transform 0.12s,opacity 0.15s;
-  user-select:none;
+.btn-close-lesson {
+  width: 34px; height: 34px; border-radius: 10px; background: var(--s2);
+  border: none; color: var(--muted); font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background 0.15s;
 }
-.piece:active{transform:scale(0.91);}
-.piece.gone{opacity:0;pointer-events:none;width:0;padding:0;border:none;margin:0;}
-.piece.wh   {background:rgba(61,142,255,0.12); border-color:rgba(61,142,255,0.4); color:#7bb8ff;}
-.piece.tobe {background:rgba(245,166,35,0.12); border-color:rgba(245,166,35,0.4); color:var(--gold);}
-.piece.aux  {background:rgba(245,166,35,0.12); border-color:rgba(245,166,35,0.4); color:var(--gold);}
-.piece.subj {background:rgba(46,196,134,0.12); border-color:rgba(46,196,134,0.4); color:#5EE0A8;}
-.piece.verb {background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.4);color:#c4aeff;}
-
-/* Feedback */
-.feedback-area{display:none;flex-direction:column;gap:6px;}
-.feedback-area.show{display:flex;}
-.fb-item{
-  padding:12px 14px;border-radius:12px;background:var(--surface);
-  border:1px solid rgba(255,255,255,0.06);
-  font-size:13px;line-height:1.6;color:var(--muted);
+.btn-close-lesson:active { background: var(--s3); }
+.lesson-pbar-wrap { flex: 1; }
+.lesson-pbar { height: 8px; background: var(--s2); border-radius: 8px; overflow: hidden; }
+.lesson-pbar-fill {
+  height: 100%; border-radius: 8px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  transition: width 0.4s cubic-bezier(.4,0,.2,1);
+  position: relative;
 }
-.fb-item .err{color:var(--red);font-weight:700;}
-.fb-item .ok{color:var(--green);font-weight:700;}
-.fb-item .dim{color:var(--muted);}
-.fb-item .rule{color:#c8d6e8;}
-.fb-correct-msg{
-  padding:14px 16px;border-radius:12px;
-  background:rgba(46,196,134,0.1);border:1px solid rgba(46,196,134,0.25);
-  font-family:'Syne',sans-serif;font-size:15px;font-weight:800;
-  color:var(--green);text-align:center;letter-spacing:0.3px;
+.lesson-pbar-fill::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 8px;
+  background: rgba(255,255,255,0.3); border-radius: 4px;
+}
+.hearts-display { display: flex; gap: 3px; flex-shrink: 0; }
+.heart { font-size: 18px; transition: transform 0.3s; }
+.heart.lost { filter: grayscale(1); opacity: 0.3; }
+.heart.shake { animation: heartShake 0.5s ease; }
+@keyframes heartShake {
+  0%,100%{transform:scale(1)}25%{transform:scale(1.4) rotate(-10deg)}75%{transform:scale(0.9)}
 }
 
-/* Action buttons */
-.game-actions{display:flex;gap:10px;}
-.btn-check{
-  flex:1;background:var(--gold);color:#000;border:none;border-radius:14px;
-  padding:16px;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;
-  cursor:pointer;transition:transform 0.12s,opacity 0.15s;
+.lesson-body {
+  flex: 1; padding: 20px 18px; display: flex; flex-direction: column; gap: 18px;
+  overflow-y: auto; padding-bottom: 200px;
 }
-.btn-check:disabled{opacity:0.3;cursor:not-allowed;}
-.btn-check:not(:disabled):active{transform:scale(0.97);}
-.btn-retry{
-  flex:1;background:var(--s2);color:var(--muted);
-  border:1px solid rgba(255,255,255,0.08);border-radius:14px;
-  padding:16px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;
-  cursor:pointer;display:none;
-}
-.btn-retry.show{display:block;}
-.btn-next{
-  flex:1;background:var(--green);color:#000;border:none;border-radius:14px;
-  padding:16px;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;
-  cursor:pointer;display:none;transition:transform 0.12s;
-}
-.btn-next.show{display:block;}
-.btn-next:active{transform:scale(0.97);}
 
-/* ── RESULT SCREEN ── */
-#s-result{
-  background:linear-gradient(160deg,#0f2040 0%,var(--bg) 55%);
-  align-items:center;justify-content:center;padding:32px 20px;
+/* Q type label */
+.q-type-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted);
 }
-.result-card{
-  background:var(--surface);border-radius:24px;border:1px solid rgba(255,255,255,0.08);
-  padding:40px 28px;max-width:420px;width:100%;text-align:center;
-  animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
-}
-.result-emoji{font-size:56px;display:block;margin-bottom:14px;animation:bob 2s ease-in-out infinite;}
-.result-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);margin-bottom:4px;}
-.result-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
-.score-ring{
-  width:120px;height:120px;margin:0 auto 14px;border-radius:50%;position:relative;
-  display:flex;align-items:center;justify-content:center;
-}
-.score-ring::before{content:'';position:absolute;inset:12px;background:var(--surface);border-radius:50%;}
-.score-inner{position:relative;z-index:1;text-align:center;}
-.score-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--text);display:block;line-height:1;}
-.score-of{font-size:11px;color:var(--muted);}
-.score-pct{font-size:17px;font-weight:800;color:var(--gold);margin-bottom:20px;}
-.result-msg{
-  font-size:13px;color:var(--muted);background:var(--s2);
-  padding:12px 16px;border-radius:12px;line-height:1.6;margin-bottom:24px;
-}
-.result-acts{display:flex;gap:10px;}
-.btn-r{
-  flex:1;border:none;border-radius:14px;padding:14px;
-  font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;cursor:pointer;
-  transition:transform 0.12s;
-}
-.btn-r:active{transform:scale(0.97);}
-.btn-r.pri{background:var(--gold);color:#000;}
-.btn-r.sec{background:var(--s2);color:var(--text);border:1px solid rgba(255,255,255,0.08);}
 
-/* ── BOTTOM NAV ── */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;
-  height:68px;
-  background:rgba(11,22,34,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-top:1px solid rgba(255,255,255,0.07);
-  display:flex;align-items:center;justify-content:space-around;
-  z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);
+/* Question card */
+.q-card {
+  background: var(--surface); border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.06); padding: 20px;
 }
-.nav-btn{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;
-  font-size:10px;cursor:pointer;padding:8px 16px;border-radius:12px;
-  text-decoration:none;transition:color 0.15s;
+.q-pt {
+  font-family: 'Syne',sans-serif; font-size: clamp(20px,5vw,26px); font-weight: 800;
+  color: var(--text); line-height: 1.2; text-align: center;
 }
-.nav-btn svg{width:21px;height:21px;}
-.nav-btn.active{color:var(--gold);}
-.nav-btn.ig-nav{color:#e6683c;}
+.q-hint { font-size: 12px; color: var(--muted); text-align: center; margin-top: 6px; }
+.q-instruction { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
 
-/* Animations */
-@keyframes popIn{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
-@keyframes pulseBorder{0%,100%{box-shadow:0 0 0 0 rgba(245,166,35,0.4)}50%{box-shadow:0 0 0 4px rgba(245,166,35,0)}}
-.shake{animation:shake 0.35s ease;}
-.pulse{animation:pulseBorder 1.2s ease infinite;}
-  /* Dev credit */
-  .dev-bar {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: 20px;
-    background: rgba(11,22,34,0.96);
-    border-top: 1px solid rgba(61,142,255,0.12);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px;
-    color: rgba(61,142,255,0.35);
-    font-family: 'DM Sans', sans-serif;
-    letter-spacing: 0.3px;
-    z-index: 101;
-  }
-  .dev-bar a { color: rgba(61,142,255,0.45); text-decoration: none; }
-  .dev-bar a:hover { color: rgba(61,142,255,0.7); }
-  .bottom-nav { bottom: 20px; }
+/* Word Order: answer track */
+.answer-track {
+  min-height: 52px; border-radius: 12px;
+  background: var(--s2); border: 2px dashed rgba(255,255,255,0.1);
+  display: flex; flex-wrap: wrap; gap: 7px; padding: 10px 12px;
+  align-items: center; transition: border-color 0.2s;
+}
+.answer-track.has-words { border-style: solid; border-color: rgba(61,142,255,0.3); }
+
+/* Word pieces */
+.piece {
+  padding: 9px 14px; border-radius: 10px;
+  font-family: 'Syne',sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.3px;
+  cursor: pointer; transition: transform 0.1s, opacity 0.15s;
+  border: 2px solid;
+}
+.piece:active { transform: scale(0.91); }
+.piece.type-wh   { background: rgba(61,142,255,0.12); border-color: rgba(61,142,255,0.4); color: #7bb8ff; }
+.piece.type-tobe { background: rgba(245,166,35,0.12); border-color: rgba(245,166,35,0.4); color: var(--gold); }
+.piece.type-aux  { background: rgba(245,166,35,0.12); border-color: rgba(245,166,35,0.4); color: var(--gold); }
+.piece.type-subj { background: rgba(46,196,134,0.12); border-color: rgba(46,196,134,0.4); color: #5EE0A8; }
+.piece.type-verb { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.4); color: #c4aeff; }
+.piece.type-neu  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); color: var(--text); }
+.piece.placed { background: var(--s2); border-color: rgba(255,255,255,0.15); color: var(--text); }
+.piece.gone { opacity: 0; pointer-events: none; width: 0; padding: 0; border: none; margin: 0; overflow: hidden; }
+
+.word-bank {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  padding: 14px; background: var(--surface); border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.05); min-height: 72px;
+}
+
+/* Multiple choice options */
+.mc-options { display: flex; flex-direction: column; gap: 10px; }
+.mc-option {
+  padding: 16px 18px; border-radius: 14px; cursor: pointer;
+  background: var(--surface); border: 2px solid rgba(255,255,255,0.1);
+  font-family: 'DM Sans',sans-serif; font-size: 14px; font-weight: 600; color: var(--text);
+  transition: all 0.15s; text-align: left; width: 100%;
+  display: flex; align-items: center; gap: 12px;
+}
+.mc-option:active { transform: scale(0.98); }
+.mc-option.selected { border-color: var(--blue); background: rgba(61,142,255,0.1); color: #7bb8ff; }
+.mc-option.correct-opt { border-color: var(--green); background: rgba(46,196,134,0.12); color: var(--green); }
+.mc-option.wrong-opt { border-color: var(--red); background: rgba(232,70,58,0.12); color: var(--red); }
+.mc-option .opt-letter {
+  width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+  background: var(--s2); display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: var(--muted);
+}
+.mc-option.selected .opt-letter { background: rgba(61,142,255,0.2); color: var(--blue); }
+
+/* Fill blank */
+.blank-sentence {
+  font-family: 'Syne',sans-serif; font-size: clamp(18px,4.5vw,24px); font-weight: 800;
+  color: var(--text); text-align: center; line-height: 1.4; padding: 16px 0 8px;
+}
+.blank-word { color: var(--gold); border-bottom: 3px solid var(--gold); padding: 0 4px; }
+.blank-placeholder {
+  display: inline-block; width: 80px; height: 28px;
+  border-bottom: 3px solid var(--muted); margin: 0 6px; vertical-align: bottom;
+}
+.fill-options { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.fill-btn {
+  padding: 12px 20px; border-radius: 12px; cursor: pointer;
+  background: var(--surface); border: 2px solid rgba(255,255,255,0.12);
+  font-family: 'Syne',sans-serif; font-size: 15px; font-weight: 800; color: var(--text);
+  transition: all 0.15s; min-width: 80px;
+}
+.fill-btn:active { transform: scale(0.95); }
+.fill-btn.selected { border-color: var(--blue); background: rgba(61,142,255,0.1); color: #7bb8ff; }
+.fill-btn.correct-opt { border-color: var(--green); background: rgba(46,196,134,0.12); color: var(--green); }
+.fill-btn.wrong-opt { border-color: var(--red); background: rgba(232,70,58,0.12); color: var(--red); }
+
+/* Meaning match */
+.meaning-word-display {
+  font-family: 'Syne',sans-serif; font-size: 36px; font-weight: 800;
+  color: var(--gold); text-align: center; padding: 20px 0 10px;
+  letter-spacing: 1px;
+}
+.meaning-sub { font-size: 12px; color: var(--muted); text-align: center; margin-bottom: 6px; }
+
+/* ── CHECK BUTTON ── */
+.check-btn-wrap {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  padding: 12px 18px 24px;
+  background: transparent;
+  z-index: 30;
+  pointer-events: none;
+}
+.btn-check {
+  width: 100%; padding: 16px; border: none; border-radius: 14px;
+  font-family: 'DM Sans',sans-serif; font-size: 16px; font-weight: 800;
+  cursor: pointer; transition: all 0.15s; pointer-events: all;
+  background: var(--gold); color: #000;
+}
+.btn-check:disabled { opacity: 0.3; cursor: not-allowed; background: var(--s2); color: var(--muted); }
+.btn-check:not(:disabled):active { transform: scale(0.98); }
+
+/* ── FEEDBACK SHEET ── */
+.feedback-sheet {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  border-radius: 24px 24px 0 0;
+  padding: 20px 18px 32px;
+  z-index: 40;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.feedback-sheet.visible { transform: translateY(0); }
+.feedback-sheet.correct { background: var(--green2); border-top: 3px solid var(--green); }
+.feedback-sheet.wrong { background: var(--red2); border-top: 3px solid var(--red); }
+.fb-title { font-family:'Syne',sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.feedback-sheet.correct .fb-title { color: var(--green); }
+.feedback-sheet.wrong .fb-title { color: var(--red); }
+.fb-body { font-size: 13px; line-height: 1.6; color: rgba(240,244,255,0.8); margin-bottom: 16px; }
+.fb-body strong { color: var(--text); }
+.btn-continue {
+  width: 100%; padding: 15px; border: none; border-radius: 14px;
+  font-family: 'DM Sans',sans-serif; font-size: 15px; font-weight: 800; cursor: pointer;
+}
+.feedback-sheet.correct .btn-continue { background: var(--green); color: #000; }
+.feedback-sheet.wrong .btn-continue { background: var(--red); color: #fff; }
+
+/* ══════════════════════════════════════
+   RESULT SCREEN
+══════════════════════════════════════ */
+#s-result {
+  background: linear-gradient(160deg,#0f2040 0%,var(--bg) 60%);
+  align-items: center; justify-content: center; padding: 32px 20px;
+}
+.result-card {
+  background: var(--surface); border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 36px 24px; max-width: 420px; width: 100%; text-align: center;
+  animation: popIn 0.45s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.result-emoji { font-size: 60px; display: block; margin-bottom: 12px; animation: bob 2s ease-in-out infinite; }
+.result-title { font-family:'Syne',sans-serif; font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.result-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+.result-stats { display: flex; gap: 12px; margin-bottom: 24px; }
+.result-stat {
+  flex: 1; background: var(--s2); border-radius: 14px; padding: 16px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.result-stat .rs-icon { font-size: 24px; }
+.result-stat .rs-val { font-family:'Syne',sans-serif; font-size: 22px; font-weight: 800; color: var(--text); }
+.result-stat .rs-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.result-acts { display: flex; gap: 10px; }
+.btn-r { flex: 1; border: none; border-radius: 14px; padding: 14px; font-family:'DM Sans',sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; transition: transform 0.12s; }
+.btn-r:active { transform: scale(0.97); }
+.btn-r.pri { background: var(--gold); color: #000; }
+.btn-r.sec { background: var(--s2); color: var(--text); border: 1px solid rgba(255,255,255,0.08); }
+
+/* ══════════════════════════════════════
+   FAIL SCREEN (no hearts)
+══════════════════════════════════════ */
+#s-fail {
+  background: linear-gradient(160deg,#200f0f 0%,var(--bg) 60%);
+  align-items: center; justify-content: center; padding: 32px 20px;
+}
+
+/* ══════════════════════════════════════
+   CONFETTI
+══════════════════════════════════════ */
+.confetti-container {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none; z-index: 100; overflow: hidden;
+}
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px; border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ══════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════ */
+@keyframes popIn { from{opacity:0;transform:scale(0.75)} to{opacity:1;transform:scale(1)} }
+@keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { animation: fadeInUp 0.3s ease forwards; }
+
+/* Dev bar */
+.dev-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 20px;
+  background: rgba(11,22,34,0.96); border-top: 1px solid rgba(61,142,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: rgba(61,142,255,0.35); font-family:'DM Sans',sans-serif;
+  letter-spacing: 0.3px; z-index: 200;
+}
+.dev-bar a { color: rgba(61,142,255,0.45); text-decoration: none; }
 </style>
 </head>
 <body>
 
-<!-- ══════════ MODE SELECTION ══════════ -->
-<div class="screen active" id="s-mode">
-  <div class="mode-hero">
-    <div class="hero-top-row">
-      <div class="badge">🦊 Método MTR</div>
-      <a class="ig-link" href="https://www.instagram.com/rodyalmeidaoficial/" target="_blank" rel="noopener">
-        <div class="ig-avatar">🦊</div>
-        <div class="ig-info">
-          <div class="ig-name">Rody Almeida</div>
-          <div class="ig-handle">@rodyalmeidaoficial</div>
-        </div>
-      </a>
-    </div>
-    <h1>Monte a <span>Frase</span></h1>
-    <p>Encaixe as peças na ordem certa e aprenda a estrutura do inglês de verdade.</p>
-  </div>
+<!-- CONFETTI CONTAINER -->
+<div class="confetti-container" id="confetti-container"></div>
 
-  <div class="modes-list">
-    <div class="mode-card" style="--c:#F5A623" onclick="startMode('ptb')">
-      <div class="mode-icon">🔵</div>
-      <div class="mode-info">
-        <div class="mode-name">PTB — To Be</div>
-        <div class="mode-desc">WH + AM / IS / ARE / WAS / WERE + Sujeito</div>
-      </div>
-      <div class="mode-count">8 frases</div>
+<!-- ══════════ HOME SCREEN ══════════ -->
+<div class="screen active" id="s-home">
+  <div class="home-header">
+    <div class="header-logo">
+      <span class="header-fox">🦊</span>
+      <span class="header-title">MTR <span>English</span></span>
     </div>
-    <div class="mode-card" style="--c:#3D8EFF" onclick="startMode('pasv')">
-      <div class="mode-icon">⚙️</div>
-      <div class="mode-info">
-        <div class="mode-name">PASV — Auxiliares</div>
-        <div class="mode-desc">WH + DO / WILL / WOULD / CAN... + Sujeito + Verbo</div>
-      </div>
-      <div class="mode-count">8 frases</div>
-    </div>
-    <div class="mode-card" style="--c:#2EC486" onclick="startMode('mix')">
-      <div class="mode-icon">🎲</div>
-      <div class="mode-info">
-        <div class="mode-name">Mix — Desafio Total</div>
-        <div class="mode-desc">PTB e PASV misturados — para quem quer testar tudo</div>
-      </div>
-      <div class="mode-count">16 frases</div>
+    <div class="header-stats">
+      <div class="stat-pill streak"><span class="stat-icon">🔥</span><span id="stat-streak">0</span></div>
+      <div class="stat-pill xp"><span class="stat-icon">⭐</span><span id="stat-xp">0</span></div>
     </div>
   </div>
+  <div class="path-container" id="path-container">
+    <!-- Injected by JS -->
   </div>
 </div>
 
-<div class="dev-bar">Desenvolvido por&nbsp; <a href="https://devlabzz.com.br/" target="_blank" rel="noopener">DevLabzz</a></div>
-
-<!-- ══════════ GAME SCREEN ══════════ -->
-<div class="screen" id="s-game">
-  <div class="game-bar">
-    <button class="btn-back-sm" onclick="goHome()">←</button>
-    <div class="bar-progress">
-      <div class="bar-mode" id="bar-mode">PTB</div>
-      <div class="pbar"><div class="pbar-fill" id="pbar-fill" style="width:0%"></div></div>
+<!-- ══════════ LESSON SCREEN ══════════ -->
+<div class="screen" id="s-lesson">
+  <div class="lesson-bar">
+    <button class="btn-close-lesson" onclick="confirmCloseLesson()">✕</button>
+    <div class="lesson-pbar-wrap">
+      <div class="lesson-pbar"><div class="lesson-pbar-fill" id="lesson-pbar-fill" style="width:0%"></div></div>
     </div>
-    <div class="bar-counter" id="bar-counter">1/8</div>
-    <div class="bar-score">⭐ <span id="bar-score">0</span></div>
+    <div class="hearts-display" id="hearts-display">
+      <span class="heart" id="h1">❤️</span>
+      <span class="heart" id="h2">❤️</span>
+      <span class="heart" id="h3">❤️</span>
+      <span class="heart" id="h4">❤️</span>
+      <span class="heart" id="h5">❤️</span>
+    </div>
   </div>
-
-  <div class="game-body" id="game-body">
-    <!-- Injected dynamically -->
+  <div class="lesson-body" id="lesson-body"></div>
+  <div class="check-btn-wrap">
+    <button class="btn-check" id="btn-check" disabled onclick="checkAnswer()">Verificar</button>
+  </div>
+  <div class="feedback-sheet" id="feedback-sheet">
+    <div class="fb-title" id="fb-title"></div>
+    <div class="fb-body" id="fb-body"></div>
+    <button class="btn-continue" onclick="continueLesson()">Continuar</button>
   </div>
 </div>
 
 <!-- ══════════ RESULT SCREEN ══════════ -->
 <div class="screen" id="s-result">
   <div class="result-card">
-    <span class="result-emoji" id="r-emoji">🏆</span>
-    <h2 class="result-title" id="r-title">Incrível!</h2>
-    <p class="result-sub" id="r-sub">Modo PTB completo!</p>
-    <div class="score-ring" id="r-ring">
-      <div class="score-inner">
-        <span class="score-num" id="r-num">0</span>
-        <span class="score-of" id="r-of">de 0</span>
+    <span class="result-emoji" id="r-emoji">🎉</span>
+    <h2 class="result-title" id="r-title">Lição Completa!</h2>
+    <p class="result-sub" id="r-sub"></p>
+    <div class="result-stats">
+      <div class="result-stat">
+        <span class="rs-icon">⭐</span>
+        <span class="rs-val" id="r-xp">0</span>
+        <span class="rs-label">XP Ganho</span>
+      </div>
+      <div class="result-stat">
+        <span class="rs-icon">❤️</span>
+        <span class="rs-val" id="r-hearts">5</span>
+        <span class="rs-label">Vidas</span>
+      </div>
+      <div class="result-stat">
+        <span class="rs-icon">✓</span>
+        <span class="rs-val" id="r-acc">0%</span>
+        <span class="rs-label">Acerto</span>
       </div>
     </div>
-    <div class="score-pct" id="r-pct">0%</div>
-    <div class="result-msg" id="r-msg">Continue praticando!</div>
     <div class="result-acts">
-      <button class="btn-r sec" onclick="startMode(currentMode)">🔄 Repetir</button>
+      <button class="btn-r sec" id="btn-retry-lesson" onclick="retryCurrentLesson()">🔄 Repetir</button>
       <button class="btn-r pri" onclick="goHome()">🏠 Início</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ BOTTOM NAV ══════════ -->
-<nav class="bottom-nav">
-  <button class="nav-btn active" id="nav-home" onclick="goHome()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-      <polyline points="9 22 9 12 15 12 15 22"/>
-    </svg>
-    Início
-  </button>
+<!-- ══════════ FAIL SCREEN ══════════ -->
+<div class="screen" id="s-fail">
+  <div class="result-card">
+    <span class="result-emoji" style="animation:none">💔</span>
+    <h2 class="result-title">Sem Vidas!</h2>
+    <p class="result-sub">Não tem problema — praticar é aprender!</p>
+    <div class="result-acts" style="margin-top:24px">
+      <button class="btn-r sec" onclick="retryCurrentLesson()">🔄 Tentar de Novo</button>
+      <button class="btn-r pri" onclick="goHome()">🏠 Início</button>
+    </div>
+  </div>
+</div>
 
-  <a class="nav-btn ig-nav" href="https://www.instagram.com/rodyalmeidaoficial/" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-      <circle cx="12" cy="12" r="4"/>
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-    </svg>
-    Instagram
-  </a>
-</nav>
+<div class="dev-bar">Desenvolvido por <a href="https://devlabzz.com.br/" target="_blank" rel="noopener">DevLabzz</a> &nbsp;·&nbsp; Método MTR – <a href="https://www.instagram.com/rodyalmeidaoficial/" target="_blank" rel="noopener">@rodyalmeidaoficial</a></div>
 
 <script>
 // ══════════════════════════════════════════
-//  PIECE KNOWLEDGE BASE
+//  PIECE TYPE LOOKUP
 // ══════════════════════════════════════════
-const PIECES = {
-  // WH words
-  WHAT:       {cat:'wh',   pt:'o quê / o que',          rule:'WHAT pergunta sobre coisas ou ações'},
-  WHERE:      {cat:'wh',   pt:'onde',                   rule:'WHERE pergunta sobre lugar'},
-  WHEN:       {cat:'wh',   pt:'quando',                 rule:'WHEN pergunta sobre tempo'},
-  WHY:        {cat:'wh',   pt:'por quê',                rule:'WHY pergunta sobre motivo'},
-  WHO:        {cat:'wh',   pt:'quem',                   rule:'WHO pergunta sobre pessoa'},
-  'HOW MUCH': {cat:'wh',   pt:'quanto',                 rule:'HOW MUCH = quantidade incontável'},
-  'HOW MANY': {cat:'wh',   pt:'quantos',                rule:'HOW MANY = quantidade contável'},
-  'HOW OLD':  {cat:'wh',   pt:'quantos anos',           rule:'HOW OLD pergunta sobre idade'},
-  'HOW LONG': {cat:'wh',   pt:'quanto tempo / distância',rule:'HOW LONG = duração ou distância'},
-  // To Be
-  AM:         {cat:'tobe', pt:'sou / estou',            rule:'AM é exclusivo de I (eu)'},
-  IS:         {cat:'tobe', pt:'é / está',               rule:'IS é para HE, SHE, IT'},
-  ARE:        {cat:'tobe', pt:'são / estão / estamos',  rule:'ARE é para YOU, WE, THEY'},
-  WAS:        {cat:'tobe', pt:'era / estava',           rule:'WAS = passado de AM e IS  →  I, HE, SHE, IT'},
-  WERE:       {cat:'tobe', pt:'eram / estavam',         rule:'WERE = passado de ARE  →  YOU, WE, THEY'},
-  // Auxiliaries
-  DO:         {cat:'aux',  pt:'fazer / presente',       rule:'DO = presente simples (I, YOU, WE, THEY)'},
-  WILL:       {cat:'aux',  pt:'vai (futuro)',            rule:'WILL indica futuro'},
-  WOULD:      {cat:'aux',  pt:'faria / gostaria',       rule:'WOULD = hipotético ou condicional'},
-  CAN:        {cat:'aux',  pt:'pode',                   rule:'CAN = capacidade no presente'},
-  COULD:      {cat:'aux',  pt:'poderia',                rule:'COULD = passado ou hipotético de CAN'},
-  SHOULD:     {cat:'aux',  pt:'deveria',                rule:'SHOULD = obrigação moral ou conselho'},
-  DID:        {cat:'aux',  pt:'fez (passado)',          rule:'DID = passado simples'},
-  // Subjects
-  I:          {cat:'subj', pt:'eu'},
-  YOU:        {cat:'subj', pt:'você'},
-  HE:         {cat:'subj', pt:'ele'},
-  SHE:        {cat:'subj', pt:'ela'},
-  IT:         {cat:'subj', pt:'isso / aquilo'},
-  WE:         {cat:'subj', pt:'nós'},
-  THEY:       {cat:'subj', pt:'eles / elas'},
-  // Verbs
-  GO:         {cat:'verb', pt:'ir'},
-  LIKE:       {cat:'verb', pt:'gostar'},
-  SEE:        {cat:'verb', pt:'ver'},
-  EAT:        {cat:'verb', pt:'comer'},
-  SLEEP:      {cat:'verb', pt:'dormir'},
-  DRINK:      {cat:'verb', pt:'beber'},
-  DRIVE:      {cat:'verb', pt:'dirigir'},
-  WORK:       {cat:'verb', pt:'trabalhar'},
-  LIVE:       {cat:'verb', pt:'morar / viver'},
-  DO_V:       {cat:'verb', pt:'fazer', display:'DO'},
+const PIECE_TYPES = {
+  WHAT:'wh',WHERE:'wh',WHEN:'wh',WHY:'wh',WHO:'wh',
+  'HOW MUCH':'wh','HOW MANY':'wh','HOW OLD':'wh','HOW LONG':'wh',
+  AM:'tobe',IS:'tobe',ARE:'tobe',WAS:'tobe',WERE:'tobe',
+  DO:'aux',WILL:'aux',WOULD:'aux',CAN:'aux',COULD:'aux',SHOULD:'aux',DID:'aux',DOES:'aux',
+  I:'subj',YOU:'subj',HE:'subj',SHE:'subj',IT:'subj',WE:'subj',THEY:'subj',
+  GO:'verb',LIKE:'verb',SEE:'verb',EAT:'verb',SLEEP:'verb',DRINK:'verb',
+  DRIVE:'verb',WORK:'verb',LIVE:'verb',STUDY:'verb',COME:'verb',KNOW:'verb',
 };
-
-// Slot type → label (PT)
-const SLOT_LABELS = {
-  wh:   'PRIORIDADE',
-  tobe: 'VERBO TO BE',
-  aux:  'AUXILIAR',
-  subj: 'SUJEITO',
-  verb: 'VERBO',
-};
+function pieceType(w){ return PIECE_TYPES[w] || 'neu'; }
 
 // ══════════════════════════════════════════
-//  SENTENCES DATA
+//  LESSON DATA
 // ══════════════════════════════════════════
-const SENTENCES_PTB = [
+const UNITS = [
   {
-    pt:'Onde você está?', en:'Where are you?',
-    slots:['wh','tobe','subj'],
-    ans:['WHERE','ARE','YOU'],
-    pool:{wh:['WHERE','WHAT','WHY'],tobe:['ARE','IS','WAS'],subj:['YOU','HE','WE']}
+    id: 'u1', num: 1,
+    name: 'To Be — Presente',
+    icon: '🔵',
+    color: '#F5A623',
+    bg: 'rgba(245,166,35,0.12)',
+    lessons: ['u1l1','u1l2','u1l3']
   },
   {
-    pt:'O que é isso?', en:'What is it?',
-    slots:['wh','tobe','subj'],
-    ans:['WHAT','IS','IT'],
-    pool:{wh:['WHAT','WHERE','WHO'],tobe:['IS','ARE','WAS'],subj:['IT','HE','YOU']}
+    id: 'u2', num: 2,
+    name: 'Auxiliares',
+    icon: '⚙️',
+    color: '#3D8EFF',
+    bg: 'rgba(61,142,255,0.12)',
+    lessons: ['u2l1','u2l2','u2l3']
   },
   {
-    pt:'Quem é ela?', en:'Who is she?',
-    slots:['wh','tobe','subj'],
-    ans:['WHO','IS','SHE'],
-    pool:{wh:['WHO','WHAT','WHERE'],tobe:['IS','ARE','WERE'],subj:['SHE','HE','THEY']}
-  },
-  {
-    pt:'Por que ele estava triste?', en:'Why was he sad?',
-    slots:['wh','tobe','subj'],
-    ans:['WHY','WAS','HE'],
-    pool:{wh:['WHY','WHEN','WHERE'],tobe:['WAS','IS','WERE'],subj:['HE','SHE','IT']}
-  },
-  {
-    pt:'Quando foi isso?', en:'When was it?',
-    slots:['wh','tobe','subj'],
-    ans:['WHEN','WAS','IT'],
-    pool:{wh:['WHEN','WHERE','WHY'],tobe:['WAS','IS','WERE'],subj:['IT','HE','YOU']}
-  },
-  {
-    pt:'Quantos anos você tem?', en:'How old are you?',
-    slots:['wh','tobe','subj'],
-    ans:['HOW OLD','ARE','YOU'],
-    pool:{wh:['HOW OLD','HOW MUCH','WHAT'],tobe:['ARE','IS','WERE'],subj:['YOU','SHE','WE']}
-  },
-  {
-    pt:'Quem eram eles?', en:'Who were they?',
-    slots:['wh','tobe','subj'],
-    ans:['WHO','WERE','THEY'],
-    pool:{wh:['WHO','WHAT','WHERE'],tobe:['WERE','WAS','ARE'],subj:['THEY','HE','IT']}
-  },
-  {
-    pt:'Onde eu estou?', en:'Where am I?',
-    slots:['wh','tobe','subj'],
-    ans:['WHERE','AM','I'],
-    pool:{wh:['WHERE','WHAT','WHEN'],tobe:['AM','IS','ARE'],subj:['I','YOU','WE']}
-  },
+    id: 'u3', num: 3,
+    name: 'Mix — Desafio Total',
+    icon: '🎲',
+    color: '#2EC486',
+    bg: 'rgba(46,196,134,0.12)',
+    lessons: ['u3l1','u3l2','u3l3']
+  }
 ];
 
-const SENTENCES_PASV = [
-  {
-    pt:'O que você faria?', en:'What would you do?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHAT','WOULD','YOU','DO_V'],
-    pool:{wh:['WHAT','WHERE','WHY'],aux:['WOULD','WILL','DID'],subj:['YOU','HE','SHE'],verb:['DO_V','GO','LIKE']}
+const LESSONS = {
+  u1l1: {
+    id:'u1l1', unit:'u1', title:'AM / IS / ARE', icon:'🟡', xpPer:10,
+    questions:[
+      { type:'multiple_choice',
+        question:'Como se diz "Onde você está?"',
+        options:['WHERE YOU ARE?','WHERE ARE YOU?','ARE WHERE YOU?','YOU ARE WHERE?'],
+        answer:1, feedback:'A ordem é <strong>WH + TO BE + SUJEITO</strong> → WHERE ARE YOU?' },
+      { type:'word_order',
+        pt:'O que ela é?', hint:'WH + TO BE + SUJEITO',
+        pieces:['WHAT','IS','SHE','ARE','WHO'],
+        answer:['WHAT','IS','SHE'],
+        feedback:'<strong>IS</strong> é para HE, SHE, IT → WHAT IS SHE?' },
+      { type:'fill_blank',
+        sentence:'WHERE ___ YOU FROM?', blank:'ARE',
+        pt:'De onde você é?',
+        options:['AM','ARE','IS'], answer:1,
+        feedback:'<strong>ARE</strong> é para YOU, WE, THEY' },
+      { type:'multiple_choice',
+        question:'Como se diz "Quem é ele?"',
+        options:['WHO HE IS?','IS WHO HE?','WHO IS HE?','HE IS WHO?'],
+        answer:2, feedback:'WH + TO BE + SUJEITO → WHO IS HE?' },
+      { type:'word_order',
+        pt:'Quando eles estão aqui?',
+        hint:'WH + TO BE + SUJEITO',
+        pieces:['WHEN','ARE','THEY','IS','WE'],
+        answer:['WHEN','ARE','THEY'],
+        feedback:'<strong>ARE</strong> para THEY, WE, YOU → WHEN ARE THEY?' },
+      { type:'meaning',
+        word:'ARE', category:'To Be',
+        options:['é / está','sou / estou','são / estão','era / estava'],
+        answer:2, feedback:'<strong>ARE</strong> = são / estão — para YOU, WE, THEY' },
+    ]
   },
-  {
-    pt:'Onde você vai?', en:'Where will you go?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHERE','WILL','YOU','GO'],
-    pool:{wh:['WHERE','WHEN','WHY'],aux:['WILL','WOULD','DID'],subj:['YOU','HE','WE'],verb:['GO','SLEEP','WORK']}
+  u1l2: {
+    id:'u1l2', unit:'u1', title:'WAS / WERE', icon:'🟠', xpPer:10,
+    questions:[
+      { type:'multiple_choice',
+        question:'Como se diz "Onde ela estava?"',
+        options:['WHERE WAS SHE?','WHERE SHE WAS?','WHERE WERE SHE?','SHE WHERE WAS?'],
+        answer:0, feedback:'<strong>WAS</strong> para I, HE, SHE, IT (passado) → WHERE WAS SHE?' },
+      { type:'fill_blank',
+        sentence:'WHERE ___ YOU YESTERDAY?', blank:'WERE',
+        pt:'Onde você estava ontem?',
+        options:['WAS','WERE','IS'], answer:1,
+        feedback:'<strong>WERE</strong> é o passado de ARE → para YOU, WE, THEY' },
+      { type:'word_order',
+        pt:'Por que ele estava lá?',
+        hint:'WH + WAS + SUJEITO',
+        pieces:['WHY','WAS','HE','WERE','SHE'],
+        answer:['WHY','WAS','HE'],
+        feedback:'<strong>WAS</strong> para HE, SHE, IT → WHY WAS HE?' },
+      { type:'meaning',
+        word:'WERE', category:'To Be — Passado',
+        options:['é / está','era / estava (I, HE)','eram / estavam (YOU, WE, THEY)','serão'],
+        answer:2, feedback:'<strong>WERE</strong> = passado de ARE (YOU, WE, THEY)' },
+      { type:'multiple_choice',
+        question:'Como se diz "Quando vocês estavam lá?"',
+        options:['WHEN YOU WERE THERE?','WHEN WERE YOU THERE?','WHEN WAS YOU THERE?','YOU WHEN WERE THERE?'],
+        answer:1, feedback:'WH + TO BE + SUJEITO → WHEN WERE YOU THERE?' },
+      { type:'word_order',
+        pt:'O que era isso?',
+        hint:'WH + WAS + SUJEITO',
+        pieces:['WHAT','WAS','IT','WERE','IS'],
+        answer:['WHAT','WAS','IT'],
+        feedback:'<strong>WAS</strong> para IT → WHAT WAS IT?' },
+    ]
   },
-  {
-    pt:'O que você gosta?', en:'What do you like?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHAT','DO','YOU','LIKE'],
-    pool:{wh:['WHAT','WHERE','WHEN'],aux:['DO','DID','WILL'],subj:['YOU','SHE','THEY'],verb:['LIKE','SEE','EAT']}
+  u1l3: {
+    id:'u1l3', unit:'u1', title:'Desafio To Be', icon:'🔴', xpPer:12,
+    questions:[
+      { type:'word_order',
+        pt:'Quem você é?',
+        hint:'WH + TO BE + SUJEITO',
+        pieces:['WHO','ARE','YOU','AM','IS'],
+        answer:['WHO','ARE','YOU'],
+        feedback:'WHO ARE YOU? — ARE para YOU' },
+      { type:'fill_blank',
+        sentence:'WHAT ___ SHE DOING?', blank:'IS',
+        pt:'O que ela está fazendo?',
+        options:['AM','IS','ARE'], answer:1,
+        feedback:'<strong>IS</strong> para HE, SHE, IT' },
+      { type:'multiple_choice',
+        question:'"Quantos anos ela tem?" (to be)',
+        options:['HOW OLD IS SHE?','HOW OLD SHE IS?','HOW OLD ARE SHE?','SHE HOW OLD IS?'],
+        answer:0, feedback:'HOW OLD IS SHE? — IS para SHE' },
+      { type:'meaning',
+        word:'AM', category:'To Be — Presente',
+        options:['é / está','são / estão','sou / estou','eram'],
+        answer:2, feedback:'<strong>AM</strong> = sou / estou — EXCLUSIVO de I (eu)' },
+      { type:'word_order',
+        pt:'Por que você estava cansado?',
+        hint:'WH + WAS/WERE + SUJEITO',
+        pieces:['WHY','WERE','YOU','WAS','ARE'],
+        answer:['WHY','WERE','YOU'],
+        feedback:'WERE para YOU → WHY WERE YOU?' },
+      { type:'multiple_choice',
+        question:'Qual está ERRADO?',
+        options:['WHERE IS HE?','WHO AM I?','WHAT ARE THEY?','WHY IS YOU?'],
+        answer:3, feedback:'"WHY IS YOU?" está errado — para YOU, usa-se <strong>ARE</strong> → WHY ARE YOU?' },
+    ]
   },
-  {
-    pt:'O que você comeu?', en:'What did you eat?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHAT','DID','YOU','EAT'],
-    pool:{wh:['WHAT','WHERE','WHY'],aux:['DID','DO','WOULD'],subj:['YOU','HE','WE'],verb:['EAT','DRINK','GO']}
+  u2l1: {
+    id:'u2l1', unit:'u2', title:'WILL e DO', icon:'⚡', xpPer:10,
+    questions:[
+      { type:'word_order',
+        pt:'Onde você vai morar?',
+        hint:'WH + WILL + SUJEITO + VERBO',
+        pieces:['WHERE','WILL','YOU','LIVE','DO','GO'],
+        answer:['WHERE','WILL','YOU','LIVE'],
+        feedback:'WH + WILL + SUJEITO + VERBO → WHERE WILL YOU LIVE?' },
+      { type:'multiple_choice',
+        question:'Como se diz "O que você faz?"',
+        options:['WHAT YOU DO?','WHAT DO YOU DO?','WHAT DOES DO YOU?','DO WHAT YOU?'],
+        answer:1, feedback:'<strong>WHAT DO YOU DO?</strong> — WH + DO + SUJEITO + VERBO' },
+      { type:'fill_blank',
+        sentence:'WHEN ___ SHE COME?', blank:'WILL',
+        pt:'Quando ela vai vir?',
+        options:['DO','WILL','DOES'], answer:1,
+        feedback:'<strong>WILL</strong> = futuro — não muda para HE/SHE/IT' },
+      { type:'meaning',
+        word:'WILL', category:'Auxiliar',
+        options:['faria','pode','vai (futuro)','deveria'],
+        answer:2, feedback:'<strong>WILL</strong> = futuro simples — igual para todos os sujeitos' },
+      { type:'word_order',
+        pt:'Por que eles vão ir?',
+        hint:'WH + WILL + SUJEITO + VERBO',
+        pieces:['WHY','WILL','THEY','GO','DO','IS'],
+        answer:['WHY','WILL','THEY','GO'],
+        feedback:'WHY WILL THEY GO? — WILL + VERBO BASE' },
+      { type:'multiple_choice',
+        question:'"Quando ela trabalha?" — presente simples',
+        options:['WHEN SHE WORK?','WHEN DO SHE WORK?','WHEN DOES SHE WORK?','WHEN SHE DOES WORK?'],
+        answer:2, feedback:'<strong>DOES</strong> para HE/SHE/IT no presente → WHEN DOES SHE WORK?' },
+    ]
   },
-  {
-    pt:'Onde ele deveria morar?', en:'Where should he live?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHERE','SHOULD','HE','LIVE'],
-    pool:{wh:['WHERE','WHEN','WHY'],aux:['SHOULD','COULD','DID'],subj:['HE','SHE','YOU'],verb:['LIVE','GO','WORK']}
+  u2l2: {
+    id:'u2l2', unit:'u2', title:'CAN e COULD', icon:'💪', xpPer:10,
+    questions:[
+      { type:'word_order',
+        pt:'O que você pode fazer?',
+        hint:'WH + CAN + SUJEITO + VERBO',
+        pieces:['WHAT','CAN','YOU','DO','WILL','ARE'],
+        answer:['WHAT','CAN','YOU','DO'],
+        feedback:'WHAT CAN YOU DO? — CAN + VERBO BASE' },
+      { type:'fill_blank',
+        sentence:'WHERE ___ SHE GO?', blank:'CAN',
+        pt:'Para onde ela pode ir?',
+        options:['COULD','CAN','WOULD'], answer:1,
+        feedback:'<strong>CAN</strong> = capacidade no presente — igual para todos' },
+      { type:'meaning',
+        word:'COULD', category:'Auxiliar',
+        options:['pode (presente)','vai','poderia / conseguia','deveria'],
+        answer:2, feedback:'<strong>COULD</strong> = passado ou hipotético de CAN' },
+      { type:'multiple_choice',
+        question:'Como se diz "Você poderia me ajudar?"',
+        options:['COULD YOU HELP ME?','CAN YOU HELPED ME?','COULD YOU HELPING ME?','YOU COULD HELP?'],
+        answer:0, feedback:'<strong>COULD YOU HELP ME?</strong> — pedido educado com COULD' },
+      { type:'word_order',
+        pt:'Por que você não pode vir?',
+        hint:'WH + CAN + SUJEITO + VERBO',
+        pieces:['WHY','CAN','YOU','COME','WILL','DO'],
+        answer:['WHY','CAN','YOU','COME'],
+        feedback:'WHY CAN YOU COME? — frase de base, o "NOT" vem depois em construções negativas' },
+      { type:'fill_blank',
+        sentence:'HOW LONG ___ YOU STAY?', blank:'CAN',
+        pt:'Por quanto tempo você pode ficar?',
+        options:['CAN','WILL','COULD'], answer:0,
+        feedback:'<strong>CAN</strong> para capacidade no presente' },
+    ]
   },
-  {
-    pt:'O que eles podem ver?', en:'What can they see?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHAT','CAN','THEY','SEE'],
-    pool:{wh:['WHAT','WHERE','WHO'],aux:['CAN','COULD','WILL'],subj:['THEY','HE','WE'],verb:['SEE','EAT','DRINK']}
+  u2l3: {
+    id:'u2l3', unit:'u2', title:'WOULD e SHOULD', icon:'🎯', xpPer:12,
+    questions:[
+      { type:'meaning',
+        word:'WOULD', category:'Auxiliar',
+        options:['pode agora','vai no futuro','faria / gostaria (condicional)','deveria'],
+        answer:2, feedback:'<strong>WOULD</strong> = condicional — WOULD YOU LIKE...? (você gostaria...?)' },
+      { type:'word_order',
+        pt:'O que você gostaria de comer?',
+        hint:'WH + WOULD + SUJEITO + LIKE',
+        pieces:['WHAT','WOULD','YOU','LIKE','SHOULD','EAT'],
+        answer:['WHAT','WOULD','YOU','LIKE'],
+        feedback:'WHAT WOULD YOU LIKE? — frase clássica de restaurante!' },
+      { type:'fill_blank',
+        sentence:'WHEN ___ I STUDY?', blank:'SHOULD',
+        pt:'Quando eu deveria estudar?',
+        options:['WOULD','SHOULD','COULD'], answer:1,
+        feedback:'<strong>SHOULD</strong> = conselho ou obrigação moral' },
+      { type:'multiple_choice',
+        question:'Como se diz "Você deveria dormir"?',
+        options:['YOU WOULD SLEEP','YOU SHOULD SLEEP','YOU COULD SLEEP','YOU WILL SLEEP'],
+        answer:1, feedback:'<strong>SHOULD</strong> = deveria → YOU SHOULD SLEEP' },
+      { type:'word_order',
+        pt:'Onde eu deveria trabalhar?',
+        hint:'WH + SHOULD + SUJEITO + VERBO',
+        pieces:['WHERE','SHOULD','I','WORK','WOULD','GO'],
+        answer:['WHERE','SHOULD','I','WORK'],
+        feedback:'WHERE SHOULD I WORK? — SHOULD + VERBO BASE' },
+      { type:'meaning',
+        word:'SHOULD', category:'Auxiliar',
+        options:['pode','vai','faria','deveria'],
+        answer:3, feedback:'<strong>SHOULD</strong> = deveria — conselho ou recomendação' },
+    ]
   },
-  {
-    pt:'Quando você vai dormir?', en:'When will you sleep?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHEN','WILL','YOU','SLEEP'],
-    pool:{wh:['WHEN','WHERE','WHY'],aux:['WILL','WOULD','DO'],subj:['YOU','SHE','THEY'],verb:['SLEEP','GO','WORK']}
+  u3l1: {
+    id:'u3l1', unit:'u3', title:'Mix — Nível 1', icon:'🔀', xpPer:15,
+    questions:[
+      { type:'word_order',
+        pt:'O que você pode comer?',
+        hint:'WH + AUX + SUJEITO + VERBO',
+        pieces:['WHAT','CAN','YOU','EAT','WILL','IS'],
+        answer:['WHAT','CAN','YOU','EAT'],
+        feedback:'WHAT CAN YOU EAT? — WH + CAN + SUJEITO + VERBO' },
+      { type:'multiple_choice',
+        question:'Qual está CORRETO?',
+        options:['WHERE SHE IS?','WHERE IS SHE?','WHERE ARE SHE?','SHE IS WHERE?'],
+        answer:1, feedback:'WHERE IS SHE? — IS para SHE, WH na frente' },
+      { type:'fill_blank',
+        sentence:'WHY ___ YOU HERE?', blank:'ARE',
+        pt:'Por que você está aqui?',
+        options:['IS','AM','ARE'], answer:2,
+        feedback:'ARE para YOU — por isso WHY ARE YOU HERE?' },
+      { type:'meaning',
+        word:'DID', category:'Auxiliar — Passado',
+        options:['faz (presente)','fez (passado simples)','fará','faria'],
+        answer:1, feedback:'<strong>DID</strong> = passado de DO — usado para perguntas no passado' },
+      { type:'word_order',
+        pt:'Quando eles vão dormir?',
+        hint:'WH + WILL + SUJEITO + VERBO',
+        pieces:['WHEN','WILL','THEY','SLEEP','SHOULD','DO'],
+        answer:['WHEN','WILL','THEY','SLEEP'],
+        feedback:'WHEN WILL THEY SLEEP? — WILL não muda para THEY' },
+      { type:'multiple_choice',
+        question:'Como se diz "Onde você morava?"',
+        options:['WHERE YOU LIVED?','WHERE WERE YOU LIVE?','WHERE DID YOU LIVE?','WHERE YOU DID LIVE?'],
+        answer:2, feedback:'DID + VERBO BASE → WHERE DID YOU LIVE? (passado simples)' },
+      { type:'fill_blank',
+        sentence:'HOW OLD ___ HE?', blank:'IS',
+        pt:'Quantos anos ele tem?',
+        options:['ARE','AM','IS'], answer:2,
+        feedback:'IS para HE, SHE, IT → HOW OLD IS HE?' },
+      { type:'word_order',
+        pt:'Por que você deveria ir?',
+        hint:'WH + SHOULD + SUJEITO + VERBO',
+        pieces:['WHY','SHOULD','YOU','GO','WOULD','ARE'],
+        answer:['WHY','SHOULD','YOU','GO'],
+        feedback:'WHY SHOULD YOU GO? — obrigação / conselho' },
+    ]
   },
-  {
-    pt:'O que você poderia beber?', en:'What could you drink?',
-    slots:['wh','aux','subj','verb'],
-    ans:['WHAT','COULD','YOU','DRINK'],
-    pool:{wh:['WHAT','WHERE','WHEN'],aux:['COULD','CAN','WOULD'],subj:['YOU','HE','WE'],verb:['DRINK','EAT','SEE']}
+  u3l2: {
+    id:'u3l2', unit:'u3', title:'Mix — Nível 2', icon:'⚡', xpPer:15,
+    questions:[
+      { type:'multiple_choice',
+        question:'Como se diz "O que você faria?"',
+        options:['WHAT YOU WOULD DO?','WHAT WOULD YOU DO?','WHAT WILL YOU DO?','WHAT DO YOU WOULD?'],
+        answer:1, feedback:'WHAT WOULD YOU DO? — clássica pergunta condicional' },
+      { type:'fill_blank',
+        sentence:'WHO ___ THEY?', blank:'ARE',
+        pt:'Quem são eles?',
+        options:['IS','WAS','ARE'], answer:2,
+        feedback:'ARE para THEY, WE, YOU → WHO ARE THEY?' },
+      { type:'word_order',
+        pt:'Quanto tempo você pode ficar?',
+        hint:'WH + CAN + SUJEITO + VERBO',
+        pieces:['HOW LONG','CAN','YOU','STAY','WILL','DO'],
+        answer:['HOW LONG','CAN','YOU','STAY'],
+        feedback:'HOW LONG CAN YOU STAY? — WH composto na frente' },
+      { type:'meaning',
+        word:'DOES', category:'Auxiliar — Presente',
+        options:['para I, YOU, WE','para HE, SHE, IT','passado de DO','futuro de DO'],
+        answer:1, feedback:'<strong>DOES</strong> = presente simples para HE, SHE, IT' },
+      { type:'multiple_choice',
+        question:'Como se diz "Onde ela trabalhava?"',
+        options:['WHERE SHE WORKED?','WHERE DID SHE WORK?','WHERE WAS SHE WORK?','WHERE SHE DID WORK?'],
+        answer:1, feedback:'DID + VERBO BASE → WHERE DID SHE WORK?' },
+      { type:'word_order',
+        pt:'Como você chegou aqui?',
+        hint:'WH + DID + SUJEITO + VERBO',
+        pieces:['HOW','DID','YOU','COME','DO','WERE'],
+        answer:['HOW','DID','YOU','COME'],
+        feedback:'HOW DID YOU COME? — DID para passado simples' },
+    ]
   },
-];
+  u3l3: {
+    id:'u3l3', unit:'u3', title:'Boss Level 👑', icon:'👑', xpPer:20,
+    questions:[
+      { type:'word_order',
+        pt:'O que você gostaria de beber?',
+        hint:'WH + WOULD + SUJEITO + LIKE + TO + VERB',
+        pieces:['WHAT','WOULD','YOU','LIKE','DRINK','CAN'],
+        answer:['WHAT','WOULD','YOU','LIKE'],
+        feedback:'WHAT WOULD YOU LIKE? — DRINK completa a frase mas o núcleo está aqui' },
+      { type:'multiple_choice',
+        question:'Qual é a tradução correta de "Quando eles poderiam vir?"',
+        options:['WHEN THEY COULD COME?','WHEN COULD THEY COME?','WHEN CAN THEY CAME?','WHEN THEY CAN COME?'],
+        answer:1, feedback:'WHEN COULD THEY COME? — WH + AUX + SUJEITO + VERBO' },
+      { type:'fill_blank',
+        sentence:'HOW MANY ___ YOU NEED?', blank:'DO',
+        pt:'Quantos você precisa?',
+        options:['DO','WILL','ARE'], answer:0,
+        feedback:'DO para I, YOU, WE, THEY no presente → HOW MANY DO YOU NEED?' },
+      { type:'word_order',
+        pt:'Por que ela não deveria ir?',
+        hint:'WH + SHOULD + SUJEITO + VERBO',
+        pieces:['WHY','SHOULD','SHE','GO','WOULD','IS'],
+        answer:['WHY','SHOULD','SHE','GO'],
+        feedback:'WHY SHOULD SHE GO? — SHOULD não muda para SHE' },
+      { type:'multiple_choice',
+        question:'Identifique a ordem CERTA: "Quantos anos eles tinham?"',
+        options:['HOW OLD WERE THEY?','HOW OLD THEY WERE?','HOW OLD WAS THEY?','THEY HOW OLD WERE?'],
+        answer:0, feedback:'HOW OLD WERE THEY? — WERE para THEY no passado' },
+      { type:'meaning',
+        word:'WOULD', category:'Condicional',
+        options:['faz (rotina)','vai (futuro certo)','faria / gostaria (hipotético)','pode'],
+        answer:2, feedback:'WOULD = condicional / hipotético — WOULD YOU LIKE A COFFEE?' },
+      { type:'fill_blank',
+        sentence:'WHERE ___ HE GO YESTERDAY?', blank:'DID',
+        pt:'Para onde ele foi ontem?',
+        options:['DO','DID','DOES'], answer:1,
+        feedback:'<strong>DID</strong> = passado de DO — para todos os sujeitos' },
+      { type:'word_order',
+        pt:'O que você pode me ensinar?',
+        hint:'WH + CAN + SUJEITO + VERBO',
+        pieces:['WHAT','CAN','YOU','TEACH','SHOULD','AM'],
+        answer:['WHAT','CAN','YOU','TEACH'],
+        feedback:'WHAT CAN YOU TEACH? — CAN + VERBO BASE' },
+    ]
+  }
+};
 
 // ══════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════
-let currentMode = 'ptb';
-let queue = [];
-let qIdx = 0;
-let score = 0;
-let placed = {};  // { slotIdx: wordKey }
-let checked = false;
-let attempts = 0;
+let progress = JSON.parse(localStorage.getItem('mtr_progress') || '{}');
+let totalXP   = parseInt(localStorage.getItem('mtr_xp') || '0');
+let streak    = parseInt(localStorage.getItem('mtr_streak') || '0');
+let lastDate  = localStorage.getItem('mtr_date') || '';
+
+// Session state
+let currentLessonId = null;
+let currentLesson   = null;
+let qIdx            = 0;
+let hearts          = 5;
+let sessionXP       = 0;
+let totalQ          = 0;
+let correctQ        = 0;
+let checked         = false;
+let selectedAnswer  = null;
+let placedWords     = [];
+let feedbackVisible = false;
 
 // ══════════════════════════════════════════
-//  HELPERS
+//  STREAK CHECK
 // ══════════════════════════════════════════
-function shuffle(a){
-  const b=[...a];
-  for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}
-  return b;
+function checkStreak(){
+  const today = new Date().toDateString();
+  if(lastDate !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    if(lastDate === yesterday){ streak++; }
+    else if(lastDate !== today){ streak = lastDate ? 0 : streak; }
+    lastDate = today;
+    localStorage.setItem('mtr_date', today);
+    localStorage.setItem('mtr_streak', streak);
+  }
 }
 
+// ══════════════════════════════════════════
+//  SAVE PROGRESS
+// ══════════════════════════════════════════
+function saveProgress(){
+  localStorage.setItem('mtr_progress', JSON.stringify(progress));
+  localStorage.setItem('mtr_xp', totalXP);
+  localStorage.setItem('mtr_streak', streak);
+}
+
+// ══════════════════════════════════════════
+//  SCREEN NAVIGATION
+// ══════════════════════════════════════════
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
 }
 
 function goHome(){
-  showScreen('s-mode');
-  document.getElementById('nav-home').classList.add('active');
+  showScreen('s-home');
+  renderPath();
+  updateHeaderStats();
+}
+
+function confirmCloseLesson(){
+  if(confirm('Sair da lição? O progresso será perdido.')){
+    goHome();
+  }
 }
 
 // ══════════════════════════════════════════
-//  DISPLAY LABEL for a word key
+//  RENDER HOME PATH
 // ══════════════════════════════════════════
-function display(key){
-  if(key === 'DO_V') return 'DO';
-  return key;
+function isUnitUnlocked(unitId){
+  if(unitId === 'u1') return true;
+  const units = ['u1','u2','u3'];
+  const idx = units.indexOf(unitId);
+  if(idx <= 0) return true;
+  const prevUnit = UNITS[idx-1];
+  return prevUnit.lessons.every(lid => progress[lid]?.done);
+}
+
+function getLessonState(lid){
+  const unit = UNITS.find(u => u.lessons.includes(lid));
+  if(!unit) return 'locked';
+  if(!isUnitUnlocked(unit.id)) return 'locked';
+  if(progress[lid]?.done) return 'done';
+  // Check if previous lesson in same unit is done (or it's the first)
+  const uidx = unit.lessons.indexOf(lid);
+  if(uidx === 0) return isUnitUnlocked(unit.id) ? 'current' : 'locked';
+  const prev = unit.lessons[uidx-1];
+  return progress[prev]?.done ? 'current' : 'locked';
+}
+
+function getLessonIcon(lid){
+  const state = getLessonState(lid);
+  if(state === 'done') return '✓';
+  if(state === 'locked') return '🔒';
+  return LESSONS[lid]?.icon || '●';
+}
+
+function renderPath(){
+  const container = document.getElementById('path-container');
+  let html = '';
+
+  UNITS.forEach(unit => {
+    const unlocked = isUnitUnlocked(unit.id);
+    const doneCount = unit.lessons.filter(lid => progress[lid]?.done).length;
+    html += `
+      <div class="unit-block">
+        <div class="unit-header" style="border-left:3px solid ${unit.color}; opacity:${unlocked?1:0.5}">
+          <div class="unit-icon-wrap" style="background:${unit.bg}">${unit.icon}</div>
+          <div class="unit-text">
+            <div class="unit-num">Unidade ${unit.num}</div>
+            <div class="unit-name">${unit.name}</div>
+            <div class="unit-prog">${doneCount}/${unit.lessons.length} lições completas</div>
+          </div>
+        </div>
+        <div class="lessons-path">`;
+
+    unit.lessons.forEach((lid, i) => {
+      const state = getLessonState(lid);
+      const lesson = LESSONS[lid];
+      const stars = progress[lid]?.stars || 0;
+      const starsHtml = [1,2,3].map(s => `<span class="star">${s<=stars?'⭐':'☆'}</span>`).join('');
+
+      if(i > 0) html += `<div class="path-connector"></div>`;
+      html += `
+        <div class="path-node-wrap">
+          <div class="path-node ${state}" onclick="onNodeClick('${lid}')">
+            <span class="node-icon">${getLessonIcon(lid)}</span>
+            <span class="node-num">${lesson?.title?.split(' ')[0] || ''}</span>
+            <div class="stars-row">${starsHtml}</div>
+          </div>
+        </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function onNodeClick(lid){
+  const state = getLessonState(lid);
+  if(state === 'locked'){
+    // shake
+    return;
+  }
+  startLesson(lid);
 }
 
 // ══════════════════════════════════════════
-//  START MODE
+//  UPDATE HEADER STATS
 // ══════════════════════════════════════════
-function startMode(mode){
-  currentMode = mode;
-  score = 0;
+function updateHeaderStats(){
+  document.getElementById('stat-streak').textContent = streak;
+  document.getElementById('stat-xp').textContent = totalXP;
+}
+
+// ══════════════════════════════════════════
+//  START LESSON
+// ══════════════════════════════════════════
+function startLesson(lid){
+  currentLessonId = lid;
+  currentLesson = LESSONS[lid];
   qIdx = 0;
+  hearts = 5;
+  sessionXP = 0;
+  correctQ = 0;
+  totalQ = currentLesson.questions.length;
+  checked = false;
+  selectedAnswer = null;
+  placedWords = [];
+  feedbackVisible = false;
 
-  if(mode === 'ptb')       queue = shuffle([...SENTENCES_PTB]);
-  else if(mode === 'pasv') queue = shuffle([...SENTENCES_PASV]);
-  else                     queue = shuffle([...SENTENCES_PTB, ...SENTENCES_PASV]);
-
-  showScreen('s-game');
-  document.getElementById('bar-mode').textContent =
-    mode === 'ptb' ? 'PTB — TO BE' : mode === 'pasv' ? 'PASV — AUXILIARES' : 'MIX';
+  updateHearts();
+  showScreen('s-lesson');
   renderQuestion();
+}
+
+function retryCurrentLesson(){
+  startLesson(currentLessonId);
 }
 
 // ══════════════════════════════════════════
 //  RENDER QUESTION
 // ══════════════════════════════════════════
 function renderQuestion(){
-  placed = {};
   checked = false;
-  attempts = 0;
+  selectedAnswer = null;
+  placedWords = [];
+  feedbackVisible = false;
 
-  const q = queue[qIdx];
-  const total = queue.length;
-
-  // Update bar
-  document.getElementById('bar-counter').textContent = `${qIdx+1}/${total}`;
-  document.getElementById('pbar-fill').style.width = `${(qIdx/total)*100}%`;
-  document.getElementById('bar-score').textContent = score;
-
-  // Build all pieces (flat shuffled array with category info)
-  const allPieces = [];
-  q.slots.forEach(slotType => {
-    q.pool[slotType].forEach(key => {
-      const info = PIECES[key];
-      if(info) allPieces.push({key, cat: info.cat});
-    });
-  });
-  const shuffledPieces = shuffle(allPieces);
-
-  // Build HTML
-  const slotsHTML = q.slots.map((type, i) => `
-    <div class="slot" data-type="${type}" data-idx="${i}" id="slot-${i}" onclick="removeFromSlot(${i})">
-      <span class="slot-label">${SLOT_LABELS[type]}</span>
-      <span class="slot-value" id="slot-val-${i}"></span>
-    </div>
-  `).join('');
-
-  const piecesHTML = shuffledPieces.map(({key, cat}) => `
-    <button class="piece ${cat}" data-key="${key}" id="piece-${key}"
-      onclick="placePiece('${key}')">
-      ${display(key)}
-    </button>
-  `).join('');
-
-  document.getElementById('game-body').innerHTML = `
-    <div class="sentence-card">
-      <div class="sentence-label">Traduza para o inglês</div>
-      <div class="sentence-pt">${q.pt}</div>
-      <div class="sentence-hint">Toque nas peças na ordem correta</div>
-    </div>
-
-    <div class="slots-area" id="slots-area">${slotsHTML}</div>
-
-    <div>
-      <div class="bank-label">Peças disponíveis</div>
-      <div class="pieces-bank" id="pieces-bank">${piecesHTML}</div>
-    </div>
-
-    <div class="feedback-area" id="feedback-area"></div>
-
-    <div class="game-actions">
-      <button class="btn-check" id="btn-check" onclick="checkAnswer()" disabled>Verificar ✓</button>
-      <button class="btn-retry show" id="btn-retry" onclick="retry()">↺ Limpar</button>
-    </div>
-    <div class="game-actions" style="display:none" id="actions-next">
-      <button class="btn-retry show" id="btn-retry2" onclick="retry()">↺ Tentar de novo</button>
-      <button class="btn-next show" id="btn-next" onclick="nextQuestion()">Próxima →</button>
-    </div>
-  `;
-
-  // Highlight first slot as active
-  highlightActiveSlot();
-}
-
-// ══════════════════════════════════════════
-//  HIGHLIGHT ACTIVE SLOT
-// ══════════════════════════════════════════
-function highlightActiveSlot(){
-  const q = queue[qIdx];
-  document.querySelectorAll('.slot').forEach((s,i)=>{
-    s.classList.remove('active','pulse');
-    if(!placed[i] && !checked){
-      // find first empty
-      const firstEmpty = q.slots.findIndex((_,idx)=>!placed[idx]);
-      if(i === firstEmpty){
-        s.classList.add('active','pulse');
-      }
-    }
-  });
-}
-
-// ══════════════════════════════════════════
-//  PLACE PIECE
-// ══════════════════════════════════════════
-function placePiece(key){
-  if(checked) return;
-  const q = queue[qIdx];
-
-  // Find first empty slot
-  const slotIdx = q.slots.findIndex((_,idx)=>!placed[idx]);
-  if(slotIdx === -1) return;
-
-  placed[slotIdx] = key;
-
-  // Update slot UI
-  const slot = document.getElementById(`slot-${slotIdx}`);
-  const val = document.getElementById(`slot-val-${slotIdx}`);
-  val.textContent = display(key);
-  slot.classList.add('filled');
-  slot.classList.remove('active','pulse');
-
-  // Hide piece from bank
-  const pieceEl = document.getElementById(`piece-${key}`);
-  if(pieceEl) pieceEl.classList.add('gone');
-
-  // Enable check if all slots filled
-  const allFilled = q.slots.every((_,i)=>placed[i]);
-  document.getElementById('btn-check').disabled = !allFilled;
-
-  highlightActiveSlot();
-}
-
-// ══════════════════════════════════════════
-//  REMOVE FROM SLOT
-// ══════════════════════════════════════════
-function removeFromSlot(slotIdx){
-  if(checked) return;
-  if(!placed[slotIdx]) return;
-
-  const key = placed[slotIdx];
-  delete placed[slotIdx];
-
-  // Clear slot UI
-  const slot = document.getElementById(`slot-${slotIdx}`);
-  document.getElementById(`slot-val-${slotIdx}`).textContent = '';
-  slot.classList.remove('filled','correct','wrong');
-
-  // Show piece back
-  const pieceEl = document.getElementById(`piece-${key}`);
-  if(pieceEl) pieceEl.classList.remove('gone');
+  const q = currentLesson.questions[qIdx];
+  const pct = (qIdx / totalQ) * 100;
+  document.getElementById('lesson-pbar-fill').style.width = pct + '%';
 
   document.getElementById('btn-check').disabled = true;
-  highlightActiveSlot();
+  document.getElementById('btn-check').textContent = 'Verificar';
+
+  // Hide feedback
+  const sheet = document.getElementById('feedback-sheet');
+  sheet.classList.remove('visible','correct','wrong');
+
+  const body = document.getElementById('lesson-body');
+
+  if(q.type === 'word_order') renderWordOrder(q, body);
+  else if(q.type === 'multiple_choice') renderMultipleChoice(q, body);
+  else if(q.type === 'fill_blank') renderFillBlank(q, body);
+  else if(q.type === 'meaning') renderMeaning(q, body);
+}
+
+// ── WORD ORDER ──
+function renderWordOrder(q, body){
+  const typeLabel = getTypeLabel('word_order');
+  body.innerHTML = `
+    <div class="q-type-label fade-in">${typeLabel}</div>
+    <div class="q-card fade-in">
+      <div class="q-pt">${q.pt}</div>
+      ${q.hint ? `<div class="q-hint">💡 ${q.hint}</div>` : ''}
+    </div>
+    <div>
+      <div class="bank-label" style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Sua resposta</div>
+      <div class="answer-track" id="answer-track" onclick=""></div>
+    </div>
+    <div>
+      <div class="bank-label" style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Palavras disponíveis</div>
+      <div class="word-bank" id="word-bank">
+        ${shuffleArr([...q.pieces]).map(w =>
+          `<div class="piece type-${pieceType(w)}" id="piece-${w.replace(/ /g,'_')}" onclick="addWord('${w.replace(/ /g,'_')}')">${w}</div>`
+        ).join('')}
+      </div>
+    </div>`;
+}
+
+function addWord(wKey){
+  if(checked) return;
+  const w = wKey.replace(/_/g,' ');
+  const el = document.getElementById(`piece-${wKey}`);
+  if(!el || el.classList.contains('gone')) return;
+  el.classList.add('gone');
+  placedWords.push(w);
+  updateAnswerTrack();
+  checkWordOrderReady();
+}
+
+function removeWord(idx){
+  if(checked) return;
+  const w = placedWords[idx];
+  placedWords.splice(idx,1);
+  const wKey = w.replace(/ /g,'_');
+  const el = document.getElementById(`piece-${wKey}`);
+  if(el) el.classList.remove('gone');
+  updateAnswerTrack();
+  checkWordOrderReady();
+}
+
+function updateAnswerTrack(){
+  const track = document.getElementById('answer-track');
+  if(!track) return;
+  track.classList.toggle('has-words', placedWords.length > 0);
+  track.innerHTML = placedWords.map((w,i) =>
+    `<div class="piece placed" onclick="removeWord(${i})">${w}</div>`
+  ).join('');
+  if(placedWords.length === 0){
+    track.innerHTML = '<span style="color:var(--muted);font-size:13px">Toque nas palavras abaixo...</span>';
+  }
+}
+
+function checkWordOrderReady(){
+  const q = currentLesson.questions[qIdx];
+  document.getElementById('btn-check').disabled = placedWords.length === 0;
+}
+
+// ── MULTIPLE CHOICE ──
+function renderMultipleChoice(q, body){
+  const letters = ['A','B','C','D'];
+  body.innerHTML = `
+    <div class="q-type-label fade-in">${getTypeLabel('multiple_choice')}</div>
+    <div class="q-card fade-in">
+      <div class="q-pt">${q.question}</div>
+    </div>
+    <div class="mc-options fade-in">
+      ${q.options.map((opt, i) => `
+        <button class="mc-option" id="mc-${i}" onclick="selectMC(${i})">
+          <div class="opt-letter">${letters[i]}</div>
+          <span>${opt}</span>
+        </button>`).join('')}
+    </div>`;
+}
+
+function selectMC(i){
+  if(checked) return;
+  document.querySelectorAll('.mc-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById(`mc-${i}`).classList.add('selected');
+  selectedAnswer = i;
+  document.getElementById('btn-check').disabled = false;
+}
+
+// ── FILL BLANK ──
+function renderFillBlank(q, body){
+  const sentenceHtml = q.sentence.replace('___', '<span class="blank-placeholder" id="blank-display"></span>');
+  body.innerHTML = `
+    <div class="q-type-label fade-in">${getTypeLabel('fill_blank')}</div>
+    <div class="q-card fade-in">
+      <div class="blank-sentence">${sentenceHtml}</div>
+      <div class="q-hint" style="margin-top:8px">${q.pt}</div>
+    </div>
+    <div class="fill-options fade-in">
+      ${q.options.map((opt,i) =>
+        `<button class="fill-btn" id="fill-${i}" onclick="selectFill(${i})">${opt}</button>`
+      ).join('')}
+    </div>`;
+}
+
+function selectFill(i){
+  if(checked) return;
+  document.querySelectorAll('.fill-btn').forEach(el => el.classList.remove('selected'));
+  document.getElementById(`fill-${i}`).classList.add('selected');
+  selectedAnswer = i;
+  // Update blank display
+  const q = currentLesson.questions[qIdx];
+  const blank = document.getElementById('blank-display');
+  if(blank){
+    blank.outerHTML = `<span class="blank-word" id="blank-display">${q.options[i]}</span>`;
+  }
+  document.getElementById('btn-check').disabled = false;
+}
+
+// ── MEANING ──
+function renderMeaning(q, body){
+  body.innerHTML = `
+    <div class="q-type-label fade-in">${getTypeLabel('meaning')}</div>
+    <div class="q-card fade-in">
+      <div class="meaning-word-display">${q.word}</div>
+      <div class="meaning-sub">${q.category}</div>
+      <div class="q-hint">Selecione o significado correto</div>
+    </div>
+    <div class="mc-options fade-in">
+      ${q.options.map((opt, i) => `
+        <button class="mc-option" id="mc-${i}" onclick="selectMC(${i})">
+          <div class="opt-letter">${i+1}</div>
+          <span>${opt}</span>
+        </button>`).join('')}
+    </div>`;
+}
+
+// ── HELPERS ──
+function getTypeLabel(t){
+  const labels = {
+    word_order: '🧩 Monte a Frase',
+    multiple_choice: '🎯 Escolha a Tradução',
+    fill_blank: '✏️ Complete a Lacuna',
+    meaning: '🔤 Qual o Significado?'
+  };
+  return labels[t] || t;
+}
+
+function shuffleArr(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
 }
 
 // ══════════════════════════════════════════
 //  CHECK ANSWER
 // ══════════════════════════════════════════
 function checkAnswer(){
+  if(checked || feedbackVisible) return;
   checked = true;
-  attempts++;
-  const q = queue[qIdx];
-  let allCorrect = true;
-  const wrongFeedback = [];
+  const q = currentLesson.questions[qIdx];
+  let correct = false;
 
-  q.slots.forEach((type, i)=>{
-    const slot = document.getElementById(`slot-${i}`);
-    const userKey = placed[i];
-    const correctKey = q.ans[i];
-    slot.classList.remove('active','pulse','filled');
+  if(q.type === 'word_order'){
+    correct = placedWords.join(' ') === q.answer.join(' ');
+    // Highlight answer track
+    const track = document.getElementById('answer-track');
+    if(track) track.style.borderColor = correct ? 'var(--green)' : 'var(--red)';
+  } else if(q.type === 'multiple_choice' || q.type === 'meaning'){
+    correct = selectedAnswer === q.answer;
+    const letters = ['A','B','C','D'];
+    document.querySelectorAll('.mc-option').forEach((el,i) => {
+      el.classList.remove('selected');
+      if(i === q.answer) el.classList.add('correct-opt');
+      else if(i === selectedAnswer && !correct) el.classList.add('wrong-opt');
+    });
+  } else if(q.type === 'fill_blank'){
+    correct = selectedAnswer === q.answer;
+    document.querySelectorAll('.fill-btn').forEach((el,i) => {
+      el.classList.remove('selected');
+      if(i === q.answer) el.classList.add('correct-opt');
+      else if(i === selectedAnswer && !correct) el.classList.add('wrong-opt');
+    });
+  }
 
-    if(userKey === correctKey){
-      slot.classList.add('correct');
-    } else {
-      slot.classList.add('wrong');
-      slot.classList.add('shake');
-      setTimeout(()=>slot.classList.remove('shake'),400);
-      allCorrect = false;
-
-      const userInfo = PIECES[userKey] || {};
-      const correctInfo = PIECES[correctKey] || {};
-      const correctPt = correctInfo.pt || '';
-      const correctRule = correctInfo.rule || '';
-      const userPt = userInfo.pt || '';
-
-      let msg = `<span class="err">✗ ${display(userKey)}</span>`;
-      if(userPt) msg += ` <span class="dim">(${userPt})</span>`;
-      msg += ` → `;
-      msg += `<span class="ok">✓ ${display(correctKey)}</span>`;
-      if(correctPt) msg += ` <span class="dim">= ${correctPt}</span>`;
-      if(correctRule) msg += `<br><span class="rule">💡 ${correctRule}</span>`;
-
-      wrongFeedback.push(msg);
-    }
-  });
-
-  const fbArea = document.getElementById('feedback-area');
-
-  if(allCorrect){
-    score++;
-    document.getElementById('bar-score').textContent = score;
-    fbArea.className = 'feedback-area show';
-    fbArea.innerHTML = `<div class="fb-correct-msg">✓ Perfeito! — ${q.en}</div>`;
-    // Hide retry+check, show only next
-    document.querySelector('.game-actions').style.display = 'none';
-    const actNext = document.getElementById('actions-next');
-    actNext.style.display = 'flex';
-    document.getElementById('btn-retry2').style.display = 'none';
-    document.getElementById('btn-next').classList.add('show');
+  if(correct){
+    correctQ++;
+    sessionXP += currentLesson.xpPer;
+    showFeedback(true, '✓ Correto!', q.feedback || '');
   } else {
-    fbArea.className = 'feedback-area show';
-    fbArea.innerHTML = wrongFeedback.map(f=>`<div class="fb-item">${f}</div>`).join('');
-    // Show retry + next
-    document.querySelector('.game-actions').style.display = 'none';
-    const actNext = document.getElementById('actions-next');
-    actNext.style.display = 'flex';
-    document.getElementById('btn-retry2').style.display = 'block';
-    document.getElementById('btn-next').classList.add('show');
+    hearts--;
+    updateHearts();
+    const correctStr = q.type === 'word_order' ? q.answer.join(' ') :
+                       (q.type === 'multiple_choice' || q.type === 'meaning') ? q.options[q.answer] :
+                       q.options[q.answer];
+    showFeedback(false, '✗ Errado!',
+      `Resposta correta: <strong>${correctStr}</strong><br>${q.feedback || ''}`);
   }
 }
 
 // ══════════════════════════════════════════
-//  RETRY (same question)
+//  FEEDBACK
 // ══════════════════════════════════════════
-function retry(){
-  renderQuestion();
+function showFeedback(correct, title, body){
+  feedbackVisible = true;
+  const sheet = document.getElementById('feedback-sheet');
+  sheet.classList.remove('correct','wrong');
+  sheet.classList.add(correct ? 'correct' : 'wrong');
+  document.getElementById('fb-title').textContent = title;
+  document.getElementById('fb-body').innerHTML = body;
+  document.getElementById('btn-check').style.display = 'none';
+  sheet.classList.add('visible');
 }
 
-// ══════════════════════════════════════════
-//  NEXT QUESTION
-// ══════════════════════════════════════════
-function nextQuestion(){
+function continueLesson(){
+  feedbackVisible = false;
+  document.getElementById('feedback-sheet').classList.remove('visible');
+  document.getElementById('btn-check').style.display = 'block';
+
+  if(hearts <= 0){
+    setTimeout(() => showScreen('s-fail'), 200);
+    return;
+  }
+
   qIdx++;
-  if(qIdx >= queue.length){
-    showResults();
+  if(qIdx >= totalQ){
+    finishLesson();
   } else {
     renderQuestion();
   }
 }
 
 // ══════════════════════════════════════════
-//  SHOW RESULTS
+//  UPDATE HEARTS
 // ══════════════════════════════════════════
-function showResults(){
-  const total = queue.length;
-  const pct = Math.round((score/total)*100);
+function updateHearts(){
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById(`h${i}`);
+    if(!el) continue;
+    if(i <= hearts){
+      el.classList.remove('lost');
+    } else {
+      if(!el.classList.contains('lost')){
+        el.classList.add('shake');
+        setTimeout(()=>el.classList.remove('shake'), 600);
+      }
+      el.classList.add('lost');
+    }
+  }
+}
 
-  const cfgs = [
-    {min:100, emoji:'🏆', title:'Nota máxima!',    msg:'Você mandou muito bem! Continue assim! 🌟'},
-    {min:80,  emoji:'🎉', title:'Muito bem!',       msg:'Ótimo desempenho! Quase perfeito! 💪'},
-    {min:60,  emoji:'😊', title:'Bom trabalho!',    msg:'Você está evoluindo! Pratique os erros! 📚'},
-    {min:40,  emoji:'💪', title:'Continue!',        msg:'Cada erro é um aprendizado! Tente de novo! 🌱'},
-    {min:0,   emoji:'🌱', title:'Você começou!',    msg:'A jornada começa agora! Repita o exercício! 🚀'},
-  ];
-  const cfg = cfgs.find(c=>pct>=c.min);
-  const modeLabel = currentMode==='ptb'?'PTB — To Be':currentMode==='pasv'?'PASV — Auxiliares':'Mix Total';
+// ══════════════════════════════════════════
+//  FINISH LESSON
+// ══════════════════════════════════════════
+function finishLesson(){
+  // Calculate stars
+  const acc = correctQ / totalQ;
+  const stars = acc >= 0.9 ? 3 : acc >= 0.6 ? 2 : 1;
 
-  document.getElementById('r-emoji').textContent = cfg.emoji;
-  document.getElementById('r-title').textContent = cfg.title;
-  document.getElementById('r-sub').textContent = `Modo ${modeLabel} completo!`;
-  document.getElementById('r-num').textContent = score;
-  document.getElementById('r-of').textContent = `de ${total}`;
-  document.getElementById('r-pct').textContent = `${pct}%`;
-  document.getElementById('r-msg').textContent = cfg.msg;
-  document.getElementById('r-ring').style.background =
-    `conic-gradient(${pct>=60?'var(--green)':'var(--gold)'} ${pct*3.6}deg, rgba(255,255,255,0.06) 0)`;
+  // Mark lesson done
+  const existing = progress[currentLessonId] || {};
+  progress[currentLessonId] = {
+    done: true,
+    stars: Math.max(stars, existing.stars || 0),
+    bestXP: Math.max(sessionXP, existing.bestXP || 0)
+  };
+
+  // Add XP
+  totalXP += sessionXP;
+
+  // Update streak
+  checkStreak();
+  streak = parseInt(localStorage.getItem('mtr_streak')||'0') + 1;
+  localStorage.setItem('mtr_streak', streak);
+
+  saveProgress();
+
+  // Result screen
+  const emojis = ['🌱','🙂','😊','🎉','🏆'];
+  const ei = Math.min(stars + (acc >= 0.9 ? 1 : 0), 4);
+  document.getElementById('r-emoji').textContent = emojis[Math.min(stars+1, 4)];
+  document.getElementById('r-title').textContent = stars===3?'Perfeito! 🏆':stars===2?'Muito Bem! 🎉':'Continue assim! 💪';
+  document.getElementById('r-sub').textContent = `${currentLesson.title} — ${stars} ⭐`;
+  document.getElementById('r-xp').textContent = '+' + sessionXP;
+  document.getElementById('r-hearts').textContent = hearts;
+  document.getElementById('r-acc').textContent = Math.round(acc*100) + '%';
 
   showScreen('s-result');
+  if(stars >= 2) spawnConfetti();
+  updateHeaderStats();
 }
+
+// ══════════════════════════════════════════
+//  CONFETTI
+// ══════════════════════════════════════════
+function spawnConfetti(){
+  const container = document.getElementById('confetti-container');
+  const colors = ['#F5A623','#2EC486','#3D8EFF','#A78BFA','#FFD27A','#E8463A'];
+  for(let i=0;i<60;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.width = (6 + Math.random()*8) + 'px';
+    el.style.height = (6 + Math.random()*8) + 'px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.animationDuration = (1.5 + Math.random()*2) + 's';
+    el.style.animationDelay = (Math.random()*0.8) + 's';
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+checkStreak();
+updateHeaderStats();
+renderPath();
 </script>
 </body>
 </html>
